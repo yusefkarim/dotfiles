@@ -4,6 +4,8 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+workspace 1; exec termite
+
 ### Variables
 #
 # Logo key.For sway commands 
@@ -77,6 +79,11 @@ output * bg /usr/share/sway/beaglebone fit
     bindsym $alt+c workspace FreeCAD; exec freecad
     # start gimp
     bindsym $alt+g workspace GIMP; exec gimp
+    # start rhythmbox
+    bindsym $alt+m workspace Music; exec rhythmbox
+    bindsym $alt+1 exec rhythmbox-client --previous
+    bindsym $alt+2 exec rhythmbox-client --play-pause
+    bindsym $alt+3 exec rhythmbox-client --next
 
     # kill focused window
     bindsym $mod+q kill
