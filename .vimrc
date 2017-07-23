@@ -48,6 +48,8 @@ syntax enable
 " colorscheme, find at, /usr/share/vim/vim80/colors/
 " Favourites: badwolf, monokai
 colorscheme monokai
+" This makes the background transparent to match terminal
+hi Normal ctermfg=252 ctermbg=none
 
 " Enable folding
 set foldmethod=indent
