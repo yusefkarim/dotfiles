@@ -42,14 +42,18 @@ let g:airline_skip_empty_sections = 1
 set noshowmode
 set timeoutlen=10
 
+" Latex stuff
+let g:syntastic_tex_checkers = ['']
+let g:livepreview_engine = 'lualatex'
+
 " Enables syntax processing
 syntax enable
 
 " colorscheme, find at, /usr/share/vim/vim80/colors/
-" Favourites: badwolf, monokai
+" Favourites: badwolf, monokai, molokai
 colorscheme monokai
 " This makes the background transparent to match terminal
-hi Normal ctermfg=252 ctermbg=none
+hi Normal ctermfg=255 ctermbg=none
 
 " Enable folding
 set foldmethod=indent
@@ -96,6 +100,7 @@ inoremap ( ()<Esc>i
 inoremap " ""<Esc>i
 inoremap ' ''<Esc>i
 inoremap [ []<Esc>i
+inoremap { {}<Esc>i
 
 " Disabling PgUp and PgDn in insert mode
 imap <PageDown> <Nop>
@@ -103,17 +108,22 @@ imap <PageUp> <Nop>
 
 " Pressing F1 will write file, in normal and insert mode
 nmap <F1> :w<CR>
-imap <F1> <ESC>:w<CR>i
+imap <F1> <ESC>:w<CR>
 
-" Change between buffers with F2 and F4, F3 will change windows
+" Change between buffers with F2 and F4, F3 will delete current buffer
 nmap <F2> :bprev<CR>
-nmap <F3> <C-w><C-w>
+nmap <F3> :bd<CR>
 nmap <F4> :bnext<CR>
 
-" Remap ctrl-n(autocomplete) to F5
-imap <F5> <C-N>
+" Change current window with F5
+nmap <F5> <C-w><C-w>
 
-" F6 will go to previous syntax error, F7 will go to next syntax error
-nmap <F6> :lprevious<CR>
-nmap <F7> :lnext<CR>
+" Remap ctrl-n(autocomplete) to F6
+imap <F6> <C-N>
+
+" F7 will go to previous syntax error, F9 will go to next syntax error, 
+" F8 toggles syntastic
+nmap <F7> :lprevious<CR>
+nmap <F8> :SyntasticToggleMod<CR>
+nmap <F9> :lnext<CR>
 
