@@ -32,10 +32,19 @@ let g:syntastic_loc_list_height=6
 let g:syntastic_error_symbol = 'E!'
 let g:syntastic_warning_symbol = 'W!'
 
+let g:syntastic_c_config_file = '.syntastic_c_config'
+
 " airline stuff
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#whitespace#trailing_format = '[%s]t!'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.maxlinenr = ''
+let g:airline_section_z = airline#section#create(['linenr', 'maxlinenr'])
 set laststatus=2
-let g:airline_theme='term'
+let g:airline_theme='minimalist'
 let g:airline_left_sep = ' '
 let g:airline_right_sep = ''
 let g:airline_skip_empty_sections = 1
@@ -49,11 +58,14 @@ let g:livepreview_engine = 'lualatex'
 " Enables syntax processing
 syntax enable
 
-" colorscheme, find at, /usr/share/vim/vim80/colors/
-" Favourites: badwolf, monokai, molokai
-colorscheme monokai
+" colorscheme
+colorscheme huginn
 " This makes the background transparent to match terminal
 hi Normal ctermfg=255 ctermbg=none
+" Overwriting colorscheme error messages for syntastic
+highlight SyntasticErrorSign ctermfg=red ctermbg=NONE
+highlight SyntasticWarningSign ctermfg=yellow ctermbg=NONE
+
 
 " Enable folding
 set foldmethod=indent
@@ -121,9 +133,17 @@ nmap <F5> <C-w><C-w>
 " Remap ctrl-n(autocomplete) to F6
 imap <F6> <C-N>
 
-" F7 will go to previous syntax error, F9 will go to next syntax error, 
+" F7 will go to previous syntax error, F9 will go to next syntax error,
 " F8 toggles syntastic
 nmap <F7> :lprevious<CR>
 nmap <F8> :SyntasticToggleMod<CR>
 nmap <F9> :lnext<CR>
 
+" My commands
+
+" :GCC compiles and runs the current file
+command GCC !gcc % && ./a.out
+" :GCC compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
+command GCCM !gcc % -lm && ./a.out
+" :upload, runs upload command defined in .bashrc to upload to TM4C123
+command Upload !make && sudo make flash
