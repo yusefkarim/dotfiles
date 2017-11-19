@@ -41,6 +41,8 @@ alias pacse='pacman -Ss'
 alias paclo='pacman -Qs'
 # Remove the specified package(s), its configuration(s) and unneeded dependencies
 alias pacrem='sudo pacman -Rns'
+# Removes old unused chached packages from /var/cache/pacman/pkg/
+alias paccc='sudo pacman -Sc'
 
 # ------ Other stuff -----
 alias systemctl-list='systemctl list-unit-files'
@@ -50,6 +52,8 @@ alias zen='sudo openvpn --config ~/Documents/Misc/zenvpn.ovpn'
 alias frost='cd ~/Documents/Misc/vpn && sudo openvpn --config canada.ovpn'
 alias fup='source ~/Documents/scripts/fontup.sh'
 alias fdown='source ~/Documents/scripts/fontdown.sh'
+alias mnt='sudo mount -o uid=$USER,gid=users,fmask=111,dmask=022'
+alias pdf='evince'      #Install evince-light from aur
 
 # ------ TM4C123 stuff -----
 alias upload='make && sudo make flash'
