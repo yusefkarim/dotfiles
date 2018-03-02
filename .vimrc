@@ -13,6 +13,7 @@ Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'mmai/vim-markdown-wiki'
 
 call vundle#end()
 
@@ -32,6 +33,7 @@ let g:syntastic_loc_list_height=6
 let g:syntastic_error_symbol = 'E!'
 let g:syntastic_warning_symbol = 'W!'
 
+"let g:syntastic_c_compiler_options = '-Wall -Wextra -Werror'
 let g:syntastic_c_config_file = '.syntastic_c_config'
 
 " airline stuff
@@ -66,7 +68,6 @@ hi Normal ctermfg=255 ctermbg=none
 highlight SyntasticErrorSign ctermfg=red ctermbg=NONE
 highlight SyntasticWarningSign ctermfg=yellow ctermbg=NONE
 
-
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
@@ -77,7 +78,7 @@ nnoremap <space> za
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set textwidth=79
+"set textwidth=79
 set expandtab
 set smarttab
 set ai

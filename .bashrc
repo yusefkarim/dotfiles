@@ -48,13 +48,18 @@ alias paccc='sudo pacman -Sc'
 alias systemctl-list='systemctl list-unit-files'
 alias bup='brightnessctl -q set +15%'
 alias bdown='brightnessctl -q set 15%-'
-alias zen='sudo openvpn --config ~/Documents/Misc/zenvpn.ovpn'
+alias zen='sudo openvpn --config ~/Documents/Misc/vpn/zenvpn.ovpn'
 alias frost='cd ~/Documents/Misc/vpn && sudo openvpn --config canada.ovpn'
 alias fup='source ~/Documents/scripts/fontup.sh'
 alias fdown='source ~/Documents/scripts/fontdown.sh'
 alias mnt='sudo mount -o uid=$USER,gid=users,fmask=111,dmask=022'
 alias pdf='evince'      #Install evince-light from aur
+alias wiki='vim ~/Documents/wiki/index.md'
 
 # ------ TM4C123 stuff -----
 alias upload='make && sudo make flash'
 
+# ------ Computer Organization - Mars -----
+alias mars='cd ~/Documents/trent/computer_organization/; java -Dsun.java2d.uiScale=1.5 -jar ~/Documents/trent/computer_organization/Mars4_5.jar'
+# ------ Partial Differential Equations - Maple -----
+alias maple='cd ~/Documents/trent/pde/; bash ~/maple2016/bin/xmaple'

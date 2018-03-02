@@ -14,7 +14,15 @@ set t_Co=256
 let g:colors_name = "huginn"
 
 " ============================ COLORS ============================
-"
+"   Green       148 
+"   Blue        39 
+"   Purple      141
+"   Magenta     197
+"   White1      231
+"   White2      255
+"   Grey        59
+"   Red         88
+
 " ------ Editor ------
 hi Cursor ctermfg=235 ctermbg=231 cterm=NONE
 hi Visual ctermfg=NONE ctermbg=59 cterm=NONE
@@ -103,17 +111,31 @@ hi DiffChange ctermfg=NONE ctermbg=NONE cterm=NONE
 hi DiffText ctermfg=231 ctermbg=NONE cterm=bold
 hi NonText ctermfg=59 ctermbg=NONE cterm=NONE
 hi SpecialKey ctermfg=59 ctermbg=NONE cterm=NONE
-hi Tag ctermfg=197 ctermbg=NONE cterm=NONE
-hi Title ctermfg=231 ctermbg=NONE cterm=bold
 hi Underlined ctermfg=NONE ctermbg=NONE cterm=underline
+hi Title ctermfg=148 ctermbg=NONE cterm=bold
+hi Tag ctermfg=197 ctermbg=NONE cterm=NONE
 
 
 " ------ html ------
-hi htmlTag ctermfg=148 ctermbg=NONE cterm=NONE
+hi htmlH1 ctermfg=148 ctermbg=NONE cterm=NONE
+hi htmlH2 ctermfg=148 ctermbg=NONE cterm=NONE
+hi htmlH3 ctermfg=148 ctermbg=NONE cterm=NONE
 hi htmlEndTag ctermfg=148 ctermbg=NONE cterm=NONE
 hi htmlTagName ctermfg=NONE ctermbg=NONE cterm=NONE
 hi htmlArg ctermfg=NONE ctermbg=NONE cterm=NONE
 hi htmlSpecialChar ctermfg=141 ctermbg=NONE cterm=NONE
+
+" ------ markdown ------
+hi markdownH1 ctermfg=148 ctermbg=NONE cterm=bold
+hi markdownH2 ctermfg=39 ctermbg=NONE cterm=bold
+hi markdownH3 ctermfg=141 ctermbg=NONE cterm=bold
+hi markdownH4 ctermfg=231 ctermbg=NONE cterm=bold
+hi markdownH5 ctermfg=231 ctermbg=NONE cterm=bold
+hi markdownH6 ctermfg=59 ctermbg=NONE cterm=bold
+hi markdownBold ctermfg=231 ctermbg=NONE cterm=bold
+hi markdownBlockquote ctermfg=231 ctermbg=NONE cterm=NONE
+hi markdownBoldItalic ctermfg=231 ctermbg=NONE cterm=bold,italic
+hi markdownItalic ctermfg=231 ctermbg=NONE cterm=italic
 
 " ----- javascript -----
 hi javaScriptFunction ctermfg=81 ctermbg=NONE cterm=NONE
