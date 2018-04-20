@@ -69,44 +69,39 @@ highlight SyntasticErrorSign ctermfg=red ctermbg=NONE
 highlight SyntasticWarningSign ctermfg=yellow ctermbg=NONE
 
 " Enable folding
-set foldmethod=indent
+set foldmethod=manual
 set foldlevel=99
-" Enable folding with spacebar
-nnoremap <space> za
+" Select lines in visual mode then press space to fold those lines
+" Press space again in normal mode to unfold
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
-" Proper indentation
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-"set textwidth=79
-set expandtab
-set smarttab
-set ai
-set si
-
-" highlight current line
-set cursorline
+set nobackup        " No file backups
+set shiftwidth=4    " Number of characters to indent by
+set tabstop=4       " Indentation for tab key
+"set softtabstop=4   " Backspace 4 spaces instead of one for tabspaced stuff
+set expandtab       " Expand Tab as spaces
+set smarttab        " Higher IQ tabs
+"set textwidth=79    " Start new line after 79 characters
+set encoding=utf8   " UTF8 support
+set nu              " Enables line numbers
+set ai              " Auto indent
+set si              " Smart indent
+set cursorline      " Highlight current line
 
 " Smart comments
 set comments=s1:/*,mb:\ *,elx:\ */
 
-" highlights matching brackets
+" Highlights matching brackets
 set showmatch
 set mat=0
+
+set incsearch       " Start searching as it is typed
+set nohlsearch      " Don't highlight search patterns
 
 " Get rid of vim sounds
 set noerrorbells
 set novisualbell
-
-" Vim search enhancments
-set incsearch
-set nohlsearch
-
-" UTF8 support
-set encoding=utf8
-
-" Enables line numbers
-set nu
 
 " Automatic bracket closure
 inoremap ( ()<Esc>i
@@ -123,7 +118,7 @@ imap <PageUp> <Nop>
 nmap <F1> :w<CR>
 imap <F1> <ESC>:w<CR>
 
-" Change between buffers with F2 and F4, F3 will delete current buffer
+" Change between buffers with F2 and F4, F3 will close current buffer
 nmap <F2> :bprev<CR>
 nmap <F3> :bd<CR>
 nmap <F4> :bnext<CR>
@@ -131,14 +126,11 @@ nmap <F4> :bnext<CR>
 " Change current window with F5
 nmap <F5> <C-w><C-w>
 
-" Remap ctrl-n(autocomplete) to F6
-imap <F6> <C-N>
-
-" F7 will go to previous syntax error, F9 will go to next syntax error,
-" F8 toggles syntastic
-nmap <F7> :lprevious<CR>
-nmap <F8> :SyntasticToggleMod<CR>
-nmap <F9> :lnext<CR>
+" F6 will go to previous syntax error, F8 will go to next syntax error,
+" F7 toggles syntastic
+nmap <F6> :lprevious<CR>
+nmap <F7> :SyntasticToggleMod<CR>
+nmap <F8> :lnext<CR>
 
 " My commands
 
@@ -146,5 +138,7 @@ nmap <F9> :lnext<CR>
 command GCC !gcc % && ./a.out
 " :GCC compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
 command GCCM !gcc % -lm && ./a.out
+" Run current Python3 script
+command PY !/usr/bin/python3 %
 " :upload, runs upload command defined in .bashrc to upload to TM4C123
 command Upload !make && sudo make flash

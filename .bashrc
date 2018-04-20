@@ -55,11 +55,8 @@ alias fdown='source ~/Documents/scripts/fontdown.sh'
 alias mnt='sudo mount -o uid=$USER,gid=users,fmask=111,dmask=022'
 alias pdf='evince'      #Install evince-light from aur
 alias wiki='vim ~/Documents/wiki/index.md'
+alias news='newsboat -C ~/.newsboat/config.txt'
 
 # ------ TM4C123 stuff -----
 alias upload='make && sudo make flash'
 
-# ------ Computer Organization - Mars -----
-alias mars='cd ~/Documents/trent/computer_organization/; java -Dsun.java2d.uiScale=1.5 -jar ~/Documents/trent/computer_organization/Mars4_5.jar'
-# ------ Partial Differential Equations - Maple -----
-alias maple='cd ~/Documents/trent/pde/; bash ~/maple2016/bin/xmaple'
