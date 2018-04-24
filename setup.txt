@@ -13,8 +13,8 @@ cat /etc/wpa_supplicant/wpa_supplicant-DEVICE.conf
 	update_config=1
 
 	network={
-		ssid="OldSchool24"
-		psk=f0bc4e3ea93259530998b3f5484668c70200550e3d7c4a9469c190905d1a2e81
+		ssid="SSID"
+		psk=encrypted password
 	}
 
 wpa_supplicant -B -i DEVICE -c /etc/wpa_supplicant/wpa_supplicant-DEVICE.conf
