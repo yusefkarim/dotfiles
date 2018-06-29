@@ -139,6 +139,8 @@ command GCC !gcc % && ./a.out
 " :GCC compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
 command GCCM !gcc % -lm && ./a.out
 " Run current Python3 script
-command PY !/usr/bin/python3 %
+command PY !clear && /usr/bin/python3 %
 " :upload, runs upload command defined in .bashrc to upload to TM4C123
 command Upload !make && sudo make flash
+" Run current Node script
+command NO !clear && node %
