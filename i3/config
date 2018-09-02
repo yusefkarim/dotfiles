@@ -1,7 +1,7 @@
 # i3 config file (v4)
 
 #Logo key
-set $mod Mod4			
+set $mod Mod4
 #Alt key
 set $alt Mod1
 #Application launcher
@@ -22,13 +22,19 @@ default_border pixel 2
 	bindsym $alt+d exec $menu
 	#start gimp
 	bindsym $alt+g exec gimp
+	#start gimp
+	bindsym $alt+i exec inkscape
+    #Redshift screen
+	bindsym $alt+r exec --no-startup-id redshift -x &> /dev/null && redshift -O 3500 &> /dev/null
+    #Clear redshift setting
+	bindsym $alt+Shift+r exec --no-startup-id redshift -x &> /dev/null
+	#Run i3lock script
+	bindsym $mod+l exec --no-startup-id ~/.config/i3/lock.sh
 #
 ###
 
 ### Key bindings, special
 #
-	#Run i3lock script
-	bindsym $mod+l exec --no-startup-id ~/.config/i3/lock.sh
     #XF86 buttons and stuff
 	bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute && pkill -RTMIN+10 i3blocks
 	bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute && pkill -RTMIN+10 i3blocks
@@ -46,9 +52,9 @@ bindsym $mod+q kill
 ### Enable touchpad with xinput
 #Step 1: Get devide id using, xinput list
 #Step 2: List device properties to find Tap Action id, xinput list-props DEVICE_ID
-#Step 3: Chnage the command below to reflect device id and property id
+#Step 3: Change the command below to reflect device id and property id
 #	     DEVICE ID;  ;PROPERTY ID
-exec xinput set-prop 11 293 1, 1, 1, 1, 1
+exec xinput set-prop 11 296 1, 1, 1, 1, 1, 1, 1
 
 ### Moving around
 #
@@ -68,8 +74,8 @@ exec xinput set-prop 11 293 1, 1, 1, 1, 1
 	bindsym $mod+Shift+Right move right
 
     #Move between workspaces
-    bindsym $mod+Shift+l workspace next
-    bindsym $mod+Shift+h workspace prev
+    #bindsym $mod+Shift+l workspace next
+    #bindsym $mod+Shift+h workspace prev
 #
 ###
 
@@ -111,8 +117,6 @@ exec xinput set-prop 11 293 1, 1, 1, 1, 1
 	bindsym $mod+6 workspace 6
 	bindsym $mod+7 workspace 7
 	bindsym $mod+8 workspace 8
-	bindsym $mod+9 workspace 9
-	bindsym $mod+0 workspace 10
 
 	#Move focused container to workspace
 	bindsym $mod+Shift+1 move container to workspace 1
@@ -123,6 +127,23 @@ exec xinput set-prop 11 293 1, 1, 1, 1, 1
 	bindsym $mod+Shift+6 move container to workspace 6
 	bindsym $mod+Shift+7 move container to workspace 7
 	bindsym $mod+Shift+8 move container to workspace 8
+#
+###
+
+### External  Display Managment
+#
+    #Laptop screen
+    bindsym $mod+Shift+l exec --no-startup-id xrandr --output HDMI2 --off --output eDP1 --auto
+    #HDMI
+    bindsym $mod+Shift+h exec --no-startup-id xrandr --output HDMI2 --auto --output eDP1 --off
+    #Laptop screen and HDMI
+    bindsym $mod+Shift+b exec --no-startup-id xrandr --output HDMI2 --auto --above eDP1
+
+    #Dedicated HDMI2 workspaces
+    workspace 9 output HDMI2
+    workspace 0 output HDMI2
+	bindsym $mod+9 workspace 9
+	bindsym $mod+0 workspace 10
 	bindsym $mod+Shift+9 move container to workspace 9
 	bindsym $mod+Shift+0 move container to workspace 10
 #
@@ -163,12 +184,12 @@ mode "resize" {
 	set $magenta	#E40151
 	set $green	#80BC08
 	set $light_grey #49483E
-	
-#Target			Border		Background    Text	  Indicator	Child Border
-client.focused		$black	        $dark_grey    $green 	  $dark_grey	$dark_grey
-client.focused_inactive	$black		$black        $light_grey $dark_grey	$dark_grey
-client.unfocused	$black		$black	      $light_grey $dark_grey	$dark_grey
-client.urgent		$red		$dark_grey    $magenta	  $dark_grey	$dark_grey
+
+#Target			        Border		Background    Text	       Indicator	Child Border
+client.focused		    $black	    $dark_grey    $green 	   $dark_grey	$dark_grey
+client.focused_inactive	$black		$black        $light_grey  $dark_grey	$dark_grey
+client.unfocused	    $black		$black	      $light_grey  $dark_grey	$dark_grey
+client.urgent		    $red		$dark_grey    $magenta	   $dark_grey	$dark_grey
 #
 ###
 
@@ -185,3 +206,5 @@ bar {
 		inactive_workspace #323232  #323232  #5c5c5c
 	}
 }
+#
+###

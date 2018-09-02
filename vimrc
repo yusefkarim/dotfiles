@@ -11,13 +11,14 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'mmai/vim-markdown-wiki'
+Plugin 'scrooloose/nerdtree'
 
 call vundle#end()
 
-filetype plugin on
+filetype plugin indent on
 
 " syntastic stuff
 set statusline+=%#warningmsg#
@@ -53,6 +54,16 @@ let g:airline_skip_empty_sections = 1
 set noshowmode
 set timeoutlen=10
 
+" NERDtree stuff
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+map <C-n> :NERDTreeToggle<CR>
+
+" vim-sync stuff
+" Press ctrl+u to upload file
+nnoremap <C-U> <ESC>:call SyncUploadFile()<CR>
+" Press ctrl+d to download file
+nnoremap <C-D> <ESC>:call SyncDownloadFile()<CR>
+
 " Latex stuff
 let g:syntastic_tex_checkers = ['']
 let g:livepreview_engine = 'lualatex'
@@ -62,7 +73,7 @@ syntax enable
 
 " colorscheme
 colorscheme huginn
-" This makes the background transparent to match terminal
+" Background to match terminal
 hi Normal ctermfg=255 ctermbg=none
 " Overwriting colorscheme error messages for syntastic
 highlight SyntasticErrorSign ctermfg=red ctermbg=NONE
@@ -75,6 +86,8 @@ set foldlevel=99
 " Press space again in normal mode to unfold
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
+" Press Ctrl+f to fold on curly brace, '{', press space to unfold
+nnoremap <C-f> zfa}
 
 set nobackup        " No file backups
 set shiftwidth=4    " Number of characters to indent by
@@ -103,12 +116,12 @@ set nohlsearch      " Don't highlight search patterns
 set noerrorbells
 set novisualbell
 
-" Automatic bracket closure
-inoremap ( ()<Esc>i
-inoremap " ""<Esc>i
-inoremap ' ''<Esc>i
-inoremap [ []<Esc>i
-inoremap { {}<Esc>i
+" Automatic bracket closure, kind of annoying
+"inoremap ( ()<Esc>i
+"inoremap " ""<Esc>i
+"inoremap ' ''<Esc>i
+"inoremap [ []<Esc>i
+"inoremap { {}<Esc>i
 
 " Disabling PgUp and PgDn in insert mode
 imap <PageDown> <Nop>
@@ -135,12 +148,13 @@ nmap <F8> :lnext<CR>
 " My commands
 
 " :GCC compiles and runs the current file
-command GCC !gcc % && ./a.out
+command GCC !clear && gcc % && ./a.out && rm a.out
 " :GCC compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
-command GCCM !gcc % -lm && ./a.out
+command GCCM !gcc % -lm && ./a.out && rm a.out
 " Run current Python3 script
 command PY !clear && /usr/bin/python3 %
 " :upload, runs upload command defined in .bashrc to upload to TM4C123
 command Upload !make && sudo make flash
-" Run current Node script
-command NO !clear && node %
+" Beautify JSON formatted objects into a new file
+command JSON !python3 -m json.tool % > %.json
+

@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='scp://root@172.18.35.6/home/cm/lanaware/src/'
+let g:netrw_dirhist_2='scp://cmadmin@172.18.35.6/home/cm/lanaware/src/'
+let g:netrw_dirhist_3='scp://cmadmin@172.18.35.6//home/cm/lanaware/src/'
+let g:netrw_dirhist_4='scp://cmadmin@172.18.35.6//home/cmadmin/cm/lanaware/src/'
+let g:netrw_dirhist_5='scp://cmadmin@172.18.35.6//home/cmadmin/cm/lanaware/src/interfaces/'
+let g:netrw_dirhist_6='sftp://root@172.18.35.6//home/cmadmin/cm/lanaware/src/'
+let g:netrw_dirhist_7='scp://root@172.18.35.6//home/cmadmin/cm/lanaware/src/'
+let g:netrw_dirhist_8='scp://root@172.18.35.6:22//home/cmadmin/cm/lanaware/src/'
+let g:netrw_dirhist_9='scp://cmadmin@172.18.35.6:22//home/cmadmin/cm/lanaware/src/'
