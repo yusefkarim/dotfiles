@@ -1,4 +1,6 @@
 /* See LICENSE file for copyright and license details. */
+// NOTE: THIS CONFIG REQUIRES BOTH scrollback DIFFS
+// https://st.suckless.org/patches/scrollback/ 
 
 /*
  * appearance
@@ -16,7 +18,7 @@ static int borderpx = 0;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/bash";
+static char *shell = "/bin/ksh";
 char *utmp = NULL;
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
