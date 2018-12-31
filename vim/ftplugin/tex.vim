@@ -3,3 +3,6 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set shortmess+=A
+
+" Spell check
+set spelllang=en_us spell

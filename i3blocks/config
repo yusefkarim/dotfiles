@@ -15,7 +15,7 @@ command=/usr/lib/i3blocks/$BLOCK_NAME
 
 [system]
 color=#66D9EF
-label=Anarchy
+label=Arch
 command=uname -sr
 interval=once
 
@@ -25,18 +25,17 @@ interval=once
 signal=11
 
 # Memory usage
-[memory]
+[ram]
+command=free | awk '/Mem/ {printf("%.2f%", ($3/$2)*100)}'
 color=#DC2672
 label=MEM
 interval=30
-#separator=false
 
-[memory]
+[swap]
+command=free | awk '/Swap/ {printf("%.2f%", ($3/$2)*100)}'
 color=#CC65FE
 label=SWAP
-instance=swap
 interval=30
-#separator=false
 
 # Disk usage
 #[disk]
@@ -72,29 +71,30 @@ instance=Master
 interval=once
 signal=10
 
-#[load_average]
-#interval=10
 
 # Battery indicator
 [battery]
-color=#AFD700
+color=#F0B116
 label=⚡
-#instance=1
 interval=30
 
 
-# Network interface monitoring
+# Wireguard Interface Address
 [iface]
+instance=azirevpn-us1
+label=VPN
+color=#FFFF01
+interval=10
+
+# Wifi Interface Address
+[iface]
+instance=wlp4s0
+label=IP
 color=#00FF00
 interval=10
 
-
 # Date Time
 [time]
-command=date '+%Y-%m-%d %I:%M'
+command=date '+%A %Y-%m-%d %I:%M'
 interval=5
 
-# OpenVPN support
-# Support multiple VPN, with colors.
-#[openvpn]
-#interval=20

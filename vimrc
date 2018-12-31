@@ -2,19 +2,20 @@
 set nocompatible
 filetype off
 
-" runtime path set to include vundle
+" Runtime path set to include vundle
 set rtp+=~/.vim/bundle/Vundle.vim
-" Includ all Vundle plugins between vundle#begin() and vundle#end()
+" Include all Vundle plugins between vundle#begin() and vundle#end()
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'mmai/vim-markdown-wiki'
 Plugin 'scrooloose/nerdtree'
+Plugin 'rust-lang/rust.vim'
+Plugin 'haya14busa/incsearch.vim'
 
 call vundle#end()
 
@@ -29,13 +30,20 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=6
+let g:syntastic_loc_list_height=3
 
-let g:syntastic_error_symbol = 'E!'
-let g:syntastic_warning_symbol = 'W!'
+"let g:syntastic_error_symbol = 'E!'
+"let g:syntastic_warning_symbol = 'W!'
+"hi SyntasticErrorSign ctermfg=196 ctermbg=None
+"hi SyntasticWarningSign ctermfg=226 ctermbg=None
+hi SyntasticErrorLine ctermfg=196 ctermbg=None cterm=Bold
+hi SyntasticWarningLine ctermfg=226 ctermbg=None cterm=Bold
+let g:syntastic_enable_signs = 0
 
 "let g:syntastic_c_compiler_options = '-Wall -Wextra -Werror'
 let g:syntastic_c_config_file = '.syntastic_c_config'
+
+let g:syntastic_tex_checkers = ['']
 
 " airline stuff
 let g:airline#extensions#tabline#enabled = 1
@@ -45,39 +53,32 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 let g:airline_symbols.maxlinenr = ''
-let g:airline_section_z = airline#section#create(['linenr', 'maxlinenr'])
 set laststatus=2
 let g:airline_theme='minimalist'
 let g:airline_left_sep = ' '
-let g:airline_right_sep = ''
-let g:airline_skip_empty_sections = 1
-set noshowmode
 set timeoutlen=10
 
 " NERDtree stuff
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
 
-" vim-sync stuff
-" Press ctrl+u to upload file
-nnoremap <C-U> <ESC>:call SyncUploadFile()<CR>
-" Press ctrl+d to download file
-nnoremap <C-D> <ESC>:call SyncDownloadFile()<CR>
+" incsearch stuff
+let g:incsearch#auto_nohlsearch = 1
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
 
-" Latex stuff
-let g:syntastic_tex_checkers = ['']
-let g:livepreview_engine = 'lualatex'
 
 " Enables syntax processing
 syntax enable
 
 " colorscheme
-colorscheme huginn
-" Background to match terminal
-hi Normal ctermfg=255 ctermbg=none
-" Overwriting colorscheme error messages for syntastic
-highlight SyntasticErrorSign ctermfg=red ctermbg=NONE
-highlight SyntasticWarningSign ctermfg=yellow ctermbg=NONE
+"colorscheme huginn
+colorscheme muninn
 
 " Enable folding
 set foldmethod=manual
@@ -95,7 +96,7 @@ set tabstop=4       " Indentation for tab key
 "set softtabstop=4   " Backspace 4 spaces instead of one for tabspaced stuff
 set expandtab       " Expand Tab as spaces
 set smarttab        " Higher IQ tabs
-"set textwidth=79    " Start new line after 79 characters
+"set textwidth=79    " Start new line after n characters
 set encoding=utf8   " UTF8 support
 set nu              " Enables line numbers
 set ai              " Auto indent
@@ -110,7 +111,7 @@ set showmatch
 set mat=0
 
 set incsearch       " Start searching as it is typed
-set nohlsearch      " Don't highlight search patterns
+set hlsearch        " Don't highlight search patterns
 
 " Get rid of vim sounds
 set noerrorbells
@@ -145,16 +146,30 @@ nmap <F6> :lprevious<CR>
 nmap <F7> :SyntasticToggleMod<CR>
 nmap <F8> :lnext<CR>
 
-" My commands
+" Ctrl-p will use pandoc to create a pdf of the current markdown file then
+" display it with evince
+nmap <C-p> :!pandoc % -V fontsize=12pt -V geometry:margin=1in
+           \ --pdf-engine=lualatex -o %:r.pdf </dev/null >/dev/null 2>&1
+           \ && evince %:r.pdf </dev/null >/dev/null 2>&1 &<CR><CR>
 
+" Ctrl-l will use lualatex to create a pdf of the current latex file then
+" display it with evince
+" NOTE: If using the minted package, specify the output directory when importing:
+"       \usepackage[outputdir=/tmp]{minted}
+" !rm -rf /tmp/%:r.* /tmp/_minted*
+nmap <C-l> :!rm -rf /tmp/_minted*
+           \ && lualatex -shell-escape -output-directory=/tmp % </dev/null >/dev/null 2>&1
+           \ && evince /tmp/%:r.pdf </dev/null >/dev/null 2>&1
+           \ && mv /tmp/%:r.pdf . </dev/null >/dev/null 2>&1  &<CR><CR>
+
+
+" My commands
 " :GCC compiles and runs the current file
 command GCC !clear && gcc % && ./a.out && rm a.out
 " :GCC compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
 command GCCM !gcc % -lm && ./a.out && rm a.out
 " Run current Python3 script
 command PY !clear && /usr/bin/python3 %
-" :upload, runs upload command defined in .bashrc to upload to TM4C123
-command Upload !make && sudo make flash
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
 
