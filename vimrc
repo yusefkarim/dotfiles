@@ -9,16 +9,14 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'ap/vim-buftabline'
+Plugin 'morhetz/gruvbox'
 Plugin 'mmai/vim-markdown-wiki'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rust-lang/rust.vim'
 Plugin 'haya14busa/incsearch.vim'
 
 call vundle#end()
-
 filetype plugin indent on
 
 " syntastic stuff
@@ -30,33 +28,19 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=3
+let g:syntastic_loc_list_height = 3
 
-"let g:syntastic_error_symbol = 'E!'
-"let g:syntastic_warning_symbol = 'W!'
-"hi SyntasticErrorSign ctermfg=196 ctermbg=None
-"hi SyntasticWarningSign ctermfg=226 ctermbg=None
-hi SyntasticErrorLine ctermfg=196 ctermbg=None cterm=Bold
-hi SyntasticWarningLine ctermfg=226 ctermbg=None cterm=Bold
-let g:syntastic_enable_signs = 0
+let g:syntastic_error_symbol = '✘➤'
+let g:syntastic_warning_symbol = '⚑➤'
+"let g:syntastic_enable_signs = 0
 
 "let g:syntastic_c_compiler_options = '-Wall -Wextra -Werror'
 let g:syntastic_c_config_file = '.syntastic_c_config'
-
 let g:syntastic_tex_checkers = ['']
 
-" airline stuff
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#whitespace#trailing_format = '[%s]t!'
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_symbols.maxlinenr = ''
-set laststatus=2
-let g:airline_theme='minimalist'
-let g:airline_left_sep = ' '
-set timeoutlen=10
+" buftabline stuff
+let g:buftabline_show = 1
+let  g:buftabline_plug_max = 0
 
 " NERDtree stuff
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -72,13 +56,15 @@ map N  <Plug>(incsearch-nohl-N)
 map *  <Plug>(incsearch-nohl-*)
 map #  <Plug>(incsearch-nohl-#)
 
-
 " Enables syntax processing
 syntax enable
 
 " colorscheme
-"colorscheme huginn
-colorscheme muninn
+set background=dark
+colorscheme gruvbox
+
+" Set default encryption method
+set cm=blowfish2
 
 " Enable folding
 set foldmethod=manual
@@ -96,7 +82,7 @@ set tabstop=4       " Indentation for tab key
 "set softtabstop=4   " Backspace 4 spaces instead of one for tabspaced stuff
 set expandtab       " Expand Tab as spaces
 set smarttab        " Higher IQ tabs
-"set textwidth=79    " Start new line after n characters
+set textwidth=80    " Start new line after n characters
 set encoding=utf8   " UTF8 support
 set nu              " Enables line numbers
 set ai              " Auto indent
@@ -117,12 +103,10 @@ set hlsearch        " Don't highlight search patterns
 set noerrorbells
 set novisualbell
 
-" Automatic bracket closure, kind of annoying
-"inoremap ( ()<Esc>i
-"inoremap " ""<Esc>i
-"inoremap ' ''<Esc>i
-"inoremap [ []<Esc>i
-"inoremap { {}<Esc>i
+" Filetype specific commands
+autocmd FileType css setlocal shiftwidth=2 tabstop=2
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+autocmd FileType tex setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
 
 " Disabling PgUp and PgDn in insert mode
 imap <PageDown> <Nop>
@@ -162,7 +146,6 @@ nmap <C-l> :!rm -rf /tmp/_minted*
            \ && evince /tmp/%:r.pdf </dev/null >/dev/null 2>&1
            \ && mv /tmp/%:r.pdf . </dev/null >/dev/null 2>&1  &<CR><CR>
 
-
 " My commands
 " :GCC compiles and runs the current file
 command GCC !clear && gcc % && ./a.out && rm a.out
@@ -172,4 +155,6 @@ command GCCM !gcc % -lm && ./a.out && rm a.out
 command PY !clear && /usr/bin/python3 %
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
+" Output current date at cursor
+command DATE :put =strftime('%A %Y-%m-%d %I:%M %p')
 

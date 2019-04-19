@@ -38,8 +38,10 @@ alias pacse='pacman -Ss'
 alias paclo='pacman -Qs'
 # Remove the specified package(s), its configuration(s) and unneeded dependencies
 alias pacrem='sudo pacman -Rns'
-# Removes old unused chached packages from /var/cache/pacman/pkg/
+# Removes old unused cached packages from /var/cache/pacman/pkg/
 alias paccc='sudo pacman -Sc'
+# List installed packages (local and AUR)
+alias pacli='pacman -Qqe'
 
 # ------ Useful Functions -----
 #Accepts command and a file, detaches process from terminal completely
@@ -56,14 +58,13 @@ alias ntfs='sudo mount -o uid=$USER,gid=users,fmask=111,dmask=022 -t ntfs-3g' #M
 alias android='sudo jmtpfs /mnt'     #Install jmtpfs from aur
 alias pdf='detach evince'            #Install evince-light from aur
 img() { feh -xZ --scale-down -B black "$1" </dev/null >/dev/null 2>&1 & disown; }
-alias mpv='detach mpv'
 alias gedit='detach gedit'
-alias email='detach thunderbird'
 alias wiki='vim ~/Documents/wiki/index.md'
 alias httpserver='python -m http.server'
 alias netstat='ss -nltup'
+alias news='newsboat'
+alias serve='~/.cargo/bin/mdbook serve'
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
-
 
 # ------ screen command for serial communication (pi/beaglebone) -----
 serial() { sudo screen $1 115200,cs8,-parenb,-cstopb,-hupcl; }

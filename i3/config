@@ -54,7 +54,7 @@ bindsym $mod+q kill
 #Step 2: List device properties to find Tap Action id, xinput list-props DEVICE_ID
 #Step 3: Change the command below to reflect device id and property id
 #	     DEVICE ID;  ;PROPERTY ID
-exec xinput set-prop 11 286 1
+exec xinput set-prop 11 287 1
 
 ### Moving around
 #

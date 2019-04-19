@@ -1,0 +1,8 @@
+auto-reload yes
+browser firefox %u </dev/null >/dev/null 2>&1 & disown
+
+color   info                white   black
+color   listnormal          white   black
+color   listfocus           black   white
+color   listnormal_unread   white   black
+color   listfocus_unread    black   white

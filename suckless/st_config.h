@@ -7,7 +7,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Dejavu Sans Mono:pixelsize=16:antialias=true:autohint=true";
+static char *font = "DejavuSansMono:pixelsize=18:antialias=true:autohint=true";
 static int borderpx = 0;
 
 /*

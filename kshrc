@@ -23,5 +23,3 @@ alias httpserver='python -m http.server'
 alias diskname='sysctl hw.disknames'
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
 
-
-bind -m '^L'=clear'^J'

@@ -18,4 +18,4 @@ cat /etc/wpa_supplicant/wpa_supplicant-DEVICE.conf
 	}
 
 wpa_supplicant -B -i DEVICE -c /etc/wpa_supplicant/wpa_supplicant-DEVICE.conf
-sudo xbps-install -Suv
+
