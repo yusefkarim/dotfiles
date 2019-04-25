@@ -40,7 +40,7 @@ let g:syntastic_tex_checkers = ['']
 
 " buftabline stuff
 let g:buftabline_show = 1
-let  g:buftabline_plug_max = 0
+let g:buftabline_plug_max = 0
 
 " NERDtree stuff
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -65,6 +65,9 @@ colorscheme gruvbox
 
 " Set default encryption method
 set cm=blowfish2
+" Fix backspace for *BSD
+set backspace=eol,indent,start
+nmap <BS> x
 
 " Enable folding
 set foldmethod=manual
@@ -79,7 +82,6 @@ nnoremap <C-f> zfa}
 set nobackup        " No file backups
 set shiftwidth=4    " Number of characters to indent by
 set tabstop=4       " Indentation for tab key
-"set softtabstop=4   " Backspace 4 spaces instead of one for tabspaced stuff
 set expandtab       " Expand Tab as spaces
 set smarttab        " Higher IQ tabs
 set textwidth=80    " Start new line after n characters
@@ -88,6 +90,7 @@ set nu              " Enables line numbers
 set ai              " Auto indent
 set si              " Smart indent
 set cursorline      " Highlight current line
+set ruler           " Display cursor position at the bottom
 
 " Smart comments
 set comments=s1:/*,mb:\ *,elx:\ */
@@ -140,19 +143,20 @@ nmap <C-p> :!pandoc % -V fontsize=12pt -V geometry:margin=1in
 " display it with evince
 " NOTE: If using the minted package, specify the output directory when importing:
 "       \usepackage[outputdir=/tmp]{minted}
-" !rm -rf /tmp/%:r.* /tmp/_minted*
 nmap <C-l> :!rm -rf /tmp/_minted*
-           \ && lualatex -shell-escape -output-directory=/tmp % </dev/null >/dev/null 2>&1
-           \ && evince /tmp/%:r.pdf </dev/null >/dev/null 2>&1
-           \ && mv /tmp/%:r.pdf . </dev/null >/dev/null 2>&1  &<CR><CR>
+           \ && lualatex -shell-escape -output-directory=/tmp % 2>&1 > /dev/null
+           \ && mv /tmp/%:r.pdf . 2>&1 > /dev/null &<CR><CR>
+           "\ && evince %:r.pdf 2>&1 > /dev/null &<CR><CR>
 
 " My commands
-" :GCC compiles and runs the current file
-command GCC !clear && gcc % && ./a.out && rm a.out
-" :GCC compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
-command GCCM !gcc % -lm && ./a.out && rm a.out
+" :CC compiles and runs the current file
+command CC !clear && cc % && ./a.out && rm a.out
+" :CCM compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
+command CCM !cc % -lm && ./a.out && rm a.out
 " Run current Python3 script
 command PY !clear && /usr/bin/python3 %
+" Open PDF with current file name (excluding extension) with evince
+command PDF !evince %:r.pdf 2>&1 > /dev/null &
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
 " Output current date at cursor

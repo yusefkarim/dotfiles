@@ -1,7 +1,7 @@
-#Creating bootable USB
+# Creating bootable USB
 dd bs=4M if=/path/to/.iso of=/dev/sdX status=progress oflag=sync
 
-#Setting up wifi
+# Setting up wifi
 wpa_passphrase SSID PASSWORD  >> SSID.txt 	#Use this to create the encrypted password, then create file below
 cat /etc/wpa_supplicant/wpa_supplicant-DEVICE.conf
 

@@ -1,0 +1,110 @@
+# Add new windows to current group
+sticky yes
+# Snap windows to edge with 4 pixel spacing
+snapdist 4
+color activeborder      black
+color inactiveborder    black
+
+# Remove all default keybindings
+unbind-key all
+
+# KEY BINDINGS:
+# 4 = mod (windows)
+# S = shift
+# C = control
+# M = meta (alt)
+
+# alt + t = open xterm
+bind-key M-t terminal
+# alt + f = open firefox
+bind-key M-f firefox
+# alt + w = open my wiki
+bind-key M-w  "xterm -fullscreen -e vim /home/yusefkarim/Documents/wiki/index.md"
+# alt + c = open menu to run arbitrary command
+bind-key M-c menu-exec
+# alt + / = show popup menu of current windows
+bind-key M-slash menu-window
+# alt + l = lock screen
+bind-key M-l lock
+
+# alt + r = redshift screen
+bind-key M-r "xrandr --output eDP-1 --gamma 1.0:0.7688303:0.52427322"
+# alt + shift + r = clear redshift settings
+bind-key MS-r "xrandr --output eDP-1 --gamma 1.0:1.0:1.0"
+# mod + shift + l = display on laptop screen
+bind-key MS-l "xrandr --output HDMI-2 --off --output eDP-1 --auto"
+# mod + shift + h = display on HDMI monitor
+bind-key MS-h "xrandr --output HDMI-2 --auto --output eDP-1 --off"
+# mod + shift + b = display on laptop screen with HDMI monitor above
+bind-key MS-b "xrandr --output HDMI-2 --auto --above eDP-1"
+# mod + shift + m = display on laptop screen and HDMI, mirrored
+bind-key MS-m "xrandr --output eDP-1 --auto --same-as HDMI-2"
+
+
+# mod + q = kill window
+bind-key 4-q window-delete
+# mod + f = make current window fullscreen
+bind-key 4-f window-fullscreen
+# mod + m = maximize current window (keeps window borders)
+bind-key 4-m window-maximize
+
+# mod + v = tile windows vertically
+bind-key 4-v window-vtile
+# mod + c = tile windows horizontally
+bind-key 4-c window-htile
+# mod + s = stick current window to be visible in all groups
+bind-key 4-s window-stick
+
+# mod + shift + arrow keys = move window left,down,up,right 10 pixels
+bind-key 4S-Left  window-move-left-big
+bind-key 4S-Down  window-move-down-big
+bind-key 4S-Up    window-move-up-big
+bind-key 4S-Right window-move-right-big
+
+# mod + arrow keys = resize window left,down,up,right by 10 pixels
+bind-key 4-Left  window-resize-left-big
+bind-key 4-Down  window-resize-down-big
+bind-key 4-Up    window-resize-up-big
+bind-key 4-Right window-resize-right-big
+
+# mod + $N = show windows from group $N only
+bind-key 4-1 group-only-1
+bind-key 4-2 group-only-2
+bind-key 4-3 group-only-3
+bind-key 4-4 group-only-4
+bind-key 4-5 group-only-5
+bind-key 4-6 group-only-6
+bind-key 4-7 group-only-7
+bind-key 4-8 group-only-8
+bind-key 4-9 group-only-9
+
+# mod + shift + $N = move window to group $N
+bind-key 4S-1 window-movetogroup-1
+bind-key 4S-2 window-movetogroup-2
+bind-key 4S-3 window-movetogroup-3
+bind-key 4S-4 window-movetogroup-4
+bind-key 4S-5 window-movetogroup-5
+bind-key 4S-6 window-movetogroup-6
+bind-key 4S-7 window-movetogroup-7
+bind-key 4S-8 window-movetogroup-8
+bind-key 4S-9 window-movetogroup-9
+
+# mod + shift + R = restart cwm
+bind-key 4S-r restart
+# mod + shift + E = log out
+bind-key 4S-e quit
+
+# Unbind default mouse actions
+unbind-mouse M-1
+unbind-mouse CM-1
+unbind-mouse M-2
+unbind-mouse M-3
+unbind-mouse CMS-3
+
+# mod + left click drag = move window
+bind-mouse 4-1 window-move
+# mod + right click drag = resize window
+bind-mouse 4-3 window-resize
+
+ignore lemonbar
+
