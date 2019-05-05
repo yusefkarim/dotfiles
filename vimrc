@@ -65,9 +65,6 @@ colorscheme gruvbox
 
 " Set default encryption method
 set cm=blowfish2
-" Fix backspace for *BSD
-set backspace=eol,indent,start
-nmap <BS> x
 
 " Enable folding
 set foldmethod=manual
@@ -155,8 +152,6 @@ command CC !clear && cc % && ./a.out && rm a.out
 command CCM !cc % -lm && ./a.out && rm a.out
 " Run current Python3 script
 command PY !clear && /usr/bin/python3 %
-" Open PDF with current file name (excluding extension) with evince
-command PDF !evince %:r.pdf 2>&1 > /dev/null &
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
 " Output current date at cursor

@@ -24,7 +24,6 @@ set encoding=utf8   " UTF8 support
 set nu              " Enables line numbers
 set ai              " Auto indent
 set si              " Smart indent
-set cursorline      " Highlight current line
 
 " Smart comments
 set comments=s1:/*,mb:\ *,elx:\ */

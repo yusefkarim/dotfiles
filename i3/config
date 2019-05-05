@@ -1,11 +1,9 @@
 # i3 config file (v4)
 
-#Logo key
+# Logo key
 set $mod Mod4
-#Alt key
+# Alt key
 set $alt Mod1
-#Application launcher
-set $menu dmenu_run
 
 #Font for window titles and bar
 font pango:DejaVu Sans Mono 12
@@ -13,38 +11,28 @@ font pango:DejaVu Sans Mono 12
 default_border pixel 2
 
 ### Key bindings, applications
-#
 	# Start a terminal
-	bindsym $alt+t exec st
+	bindsym $alt+t exec xterm
 	# Start firefox
 	bindsym $alt+f exec firefox
-	# Open Exocortex
+	# Open wiki
 	bindsym $alt+w exec st -e vim ~/Documents/wiki/index.md
-	# Start dmenu
-	bindsym $alt+d exec $menu
-	#start gimp
-	bindsym $alt+i exec inkscape
-    #Redshift screen
-	bindsym $alt+r exec --no-startup-id redshift -x &> /dev/null && redshift -O 3500 &> /dev/null
-    #Clear redshift setting
-	bindsym $alt+Shift+r exec --no-startup-id redshift -x &> /dev/null
-	#Run i3lock script
-	bindsym $mod+l exec --no-startup-id ~/.config/i3/lock.sh
-#
-###
+        # Redshift screen
+	bindsym $alt+r exec xrandr --output eDP1 --gamma 1.0:0.769:0.524
+        # Clear redshift setting
+	bindsym $alt+Shift+r exec xrandr --output eDP1 --gamma 1.0:1.0:1.0
+	# Run i3lock
+	bindsym $mod+l exec i3lock -ue -c 282828 && sleep 20 && pgrep i3lock && xset dpms force off
 
 ### Key bindings, special
-#
-    #XF86 buttons and stuff
+    	#XF86 buttons and stuff
 	bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute && pkill -RTMIN+10 i3blocks
 	bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute && pkill -RTMIN+10 i3blocks
 	bindsym XF86AudioMute exec amixer -q set Master toggle && pkill -RTMIN+10 i3blocks
-	bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
-	bindsym XF86MonBrightnessUp exec brightnessctl set +5%
-    bindsym XF86AudioMicMute exec --no-startup-id exec amixer set Capture toggle
-    bindsym Print exec --no-startup-id scrot ~/Pictures/%Y-%m-%d-%T-screenshot.png
-#
-###
+	bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+	bindsym XF86MonBrightnessUp exec xbacklight -inc 5
+        bindsym XF86AudioMicMute exec amixer set Capture toggle
+        bindsym Print exec scrot ~/Pictures/%Y-%m-%d-%T-screenshot.png
 
 ### Kill focused window
 bindsym $mod+q kill
@@ -54,61 +42,42 @@ bindsym $mod+q kill
 #Step 2: List device properties to find Tap Action id, xinput list-props DEVICE_ID
 #Step 3: Change the command below to reflect device id and property id
 #	     DEVICE ID;  ;PROPERTY ID
-exec xinput set-prop 11 287 1
+exec xinput set-prop 11 286 1
 
 ### Moving around
-#
-	#Use Mouse+$mod to drag floating windows to their wanted position
+	# Use Mouse+$mod to drag floating windows to their wanted position
 	floating_modifier $mod
 
-	###Move focus
-    bindsym $mod+Left focus left
+	# Move focus
+        bindsym $mod+Left focus left
 	bindsym $mod+Down focus down
 	bindsym $mod+Up focus up
 	bindsym $mod+Right focus right
 
-	#Move focused window
+	# Move focused window
 	bindsym $mod+Shift+Left move left
 	bindsym $mod+Shift+Down move down
 	bindsym $mod+Shift+Up move up
 	bindsym $mod+Shift+Right move right
 
-    #Move between workspaces
-    #bindsym $mod+Shift+l workspace next
-    #bindsym $mod+Shift+h workspace prev
-#
-###
-
 ### Layout
-#
-	#Split in horizontal orientation
+	# Split in horizontal orientation
 	bindsym $mod+h split h
-
-	#Split in vertical orientation
+	# Split in vertical orientation
 	bindsym $mod+v split v
-
-	#Enter fullscreen mode for the focused container
+	# Enter fullscreen mode for the focused container
 	bindsym $mod+f fullscreen toggle
-
-	#Change container layout (stacked, tabbed, toggle split)
+	# Change container layout (stacked, tabbed, toggle split)
 	bindsym $mod+s layout stacking
 	bindsym $mod+t layout tabbed
 	bindsym $mod+e layout toggle split
-
-	#Toggle tiling / floating
+	# Toggle tiling / floating
 	bindsym $mod+Shift+space floating toggle
-
-	#Change focus between tiling / floating windows
+	# Change focus between tiling / floating windows
 	bindsym $mod+space focus mode_toggle
 
-	#Focus the parent container
-	bindsym $mod+a focus parent
-#
-###
-
 ### Workspaces
-#
-	#Switch to workspace
+	# Switch to workspace
 	bindsym $mod+1 workspace 1
 	bindsym $mod+2 workspace 2
 	bindsym $mod+3 workspace 3
@@ -118,7 +87,7 @@ exec xinput set-prop 11 287 1
 	bindsym $mod+7 workspace 7
 	bindsym $mod+8 workspace 8
 
-	#Move focused container to workspace
+	# Move focused container to workspace
 	bindsym $mod+Shift+1 move container to workspace 1
 	bindsym $mod+Shift+2 move container to workspace 2
 	bindsym $mod+Shift+3 move container to workspace 3
@@ -127,79 +96,66 @@ exec xinput set-prop 11 287 1
 	bindsym $mod+Shift+6 move container to workspace 6
 	bindsym $mod+Shift+7 move container to workspace 7
 	bindsym $mod+Shift+8 move container to workspace 8
-#
-###
 
 ### External  Display Managment
-#
-    #Laptop screen
-    bindsym $mod+Shift+l exec --no-startup-id xrandr --output HDMI-2 --off --output eDP-1 --auto
-    #HDMI
-    bindsym $mod+Shift+h exec --no-startup-id xrandr --output HDMI-2 --auto --output eDP-1 --off
-    #Laptop screen and HDMI
-    bindsym $mod+Shift+b exec --no-startup-id xrandr --output HDMI-2 --auto --above eDP-1
-    bindsym $mod+Shift+m exec --no-startup-id xrandr --output eDP-1 --same-as HDMI-2
+    # Laptop screen
+    bindsym $mod+Shift+l exec xrandr --output HDMI-2 --off --output eDP-1 --auto
+    # HDMI
+    bindsym $mod+Shift+h exec xrandr --output HDMI-2 --auto --output eDP-1 --off
+    # Laptop screen and HDMI
+    bindsym $mod+Shift+b exec xrandr --output HDMI-2 --auto --above eDP-1
+    bindsym $mod+Shift+m exec xrandr --output eDP-1 --same-as HDMI-2
 
-    #Dedicated HDMI2 workspaces
+    # Dedicated HDMI2 workspaces
     workspace 9 output HDMI-2
     workspace 0 output HDMI-2
-	bindsym $mod+9 workspace 9
-	bindsym $mod+0 workspace 10
-	bindsym $mod+Shift+9 move container to workspace 9
-	bindsym $mod+Shift+0 move container to workspace 10
-#
-###
+    bindsym $mod+9 workspace 9
+    bindsym $mod+0 workspace 10
+    bindsym $mod+Shift+9 move container to workspace 9
+    bindsym $mod+Shift+0 move container to workspace 10
 
-#Reload the configuration file
+### Exit and reload
+# Reload the configuration file
 bindsym $mod+Shift+c reload
-#Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-#Exit i3 (logs you out of your X session)
+# Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-#Resize window (you can also use the mouse for that)
+# Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape or $mod+r
+        # Back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
 
 ### Window Decoration
-#
-	set $black 	#1E1E1E
-	set $dark_grey	#333333
-	set $red	#990100
-	set $magenta	#E40151
-	set $green	#80BC08
-	set $light_grey #49483E
+        set $black 	#1E1E1E
+        set $dark_grey	#333333
+        set $red	#990100
+        set $magenta	#E40151
+        set $green	#80BC08
+        set $light_grey #49483E
 
-#Target			        Border		Background    Text	       Indicator	Child Border
-client.focused		    $black	    $dark_grey    $green 	   $dark_grey	$dark_grey
-client.focused_inactive	$black		$black        $light_grey  $dark_grey	$dark_grey
-client.unfocused	    $black		$black	      $light_grey  $dark_grey	$dark_grey
-client.urgent		    $red		$dark_grey    $magenta	   $dark_grey	$dark_grey
-#
-###
+        # Target | Border | Background | Text | Indicator | Child Border
+        client.focused $black $dark_grey $green $dark_grey $dark_grey
+        client.focused_inactive $black $black $light_grey $dark_grey $dark_grey
+        client.unfocused $black $black $light_grey $dark_grey $dark_grey
+        client.urgent $red $dark_grey $magenta $dark_grey $dark_grey
 
-###i3blocks stuff
-#
-	bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+### i3blocks stuff
+	#bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 
 bar {
-	status_command SCRIPT_DIR=~/.config/i3blocks/blocklets i3blocks
+	#status_command SCRIPT_DIR=~/.config/i3blocks/blocklets i3blocks
 	position top
 	colors {
 		statusline #ffffff
@@ -207,5 +163,4 @@ bar {
 		inactive_workspace #323232  #323232  #5c5c5c
 	}
 }
-#
-###
+
