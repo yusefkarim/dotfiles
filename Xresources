@@ -1,20 +1,8 @@
-! #### Xlock Config ####
-XLock.dpmsoff     : 1
-XLock.description : off
-XLock.echokeys    : off
-XLock.info        :
-XLock.background  : black
-XLock.foreground  : white
-XLock.mode        : blank
-XLock.username    : USER: 
-XLock.password    : PASS: 
-
 ! #### XTerm Config ####
 XTerm*faceName                  : DejavuSansMono
 XTerm*faceSize                  : 14
 XTerm*charClass                 : 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48
 XTerm*eightBitInput             : true
-XTerm*utf8                      : true
 XTerm*borderWidth		: 0
 XTerm*internalBorder		: 2
 XTerm*vt100.scrollBar		: false
@@ -27,6 +15,7 @@ XTerm*scrollKey			: true
 XTerm*cutNewline		: false
 XTerm*on2Clicks			: word
 XTerm*on3Clicks			: line
+
 ! Gruvbox-like colorscheme
 XTerm*background: #1d2021
 XTerm*foreground: #ebdbb2

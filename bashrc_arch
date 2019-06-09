@@ -50,15 +50,19 @@ alias pacli='pacman -Qqe'
 # ------ Functions -----
 # Accepts command and a file, detaches process from terminal completely
 detach() { "$1" "$2" 2>&1 > /dev/null & disown; }
-vpn() { wg-quick "$1" azirevpn-us1; }
+vpn() { wg-quick "$1" azirevpn-ca1; }
 img() { feh -xZ --scale-down -B black "$1" 2>&1 > /dev/null & disown; }
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
+# Decimal to hexadecimal
+d2h() { printf "0x%x\n" $1; }
+# Hexadecimal (without 0x) to ascii
+h2a() { echo -n $1 | xxd -ps -r; }
 
 # ------ Other stuff -----
 alias lh='ls -lh'
-alias mnt='sudo mount -o uid=$USER,gid=users,fmask=111,dmask=022'
+alias mnt='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
 # Install ntfs-3g with pacman
-alias ntfs='sudo mount -o uid=$USER,gid=users,fmask=111,dmask=022 -t ntfs-3g'
+alias ntfs='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022 -t ntfs-3g'
 # Install jmtpfs from aur
 alias android='sudo jmtpfs /mnt'
 # Install evince-light from aur
@@ -69,7 +73,7 @@ alias httpserver='python -m http.server'
 alias netstat='ss -nltup'
 
 # ------ screen command for serial communication (pi/beaglebone) -----
-serial() { sudo screen $1 115200,cs8,-parenb,-cstopb,-hupcl; }
+serial() { sudo screen -L $1 115200,cs8,-parenb,-cstopb,-hupcl; }
 # ------ Assemble, link and dump shellcode -----
 shellcode() { as "$1".s -o "$1".o && ld "$1".o -N -o "$1" && objcopy -O binary "$1" "$1".bin; }
 

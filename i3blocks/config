@@ -7,16 +7,10 @@ markup=none
 #Path to default scripts
 command=/usr/lib/i3blocks/$BLOCK_NAME
 
-# Generic media player support
-#[mediaplayer]
-#instance=rhythmbox
-#interval=5
-#signal=10
-
 [system]
 color=#66D9EF
 label=Arch
-command=uname -sr
+command=uname -sr | awk -F- '{print $1}'
 interval=once
 
 [keyindicator]
@@ -37,21 +31,6 @@ color=#CC65FE
 label=SWAP
 interval=30
 
-# Disk usage
-#[disk]
-#label=HOME
-#instance=/mnt/data
-#interval=30
-
-#[wifi]
-#instance=wlp4s0
-#interval=10
-#separator=false
-
-#[bandwidth]
-#instance=eth0
-#interval=5
-
 # CPU usage
 [cpu_usage]
 color=#FD452D
@@ -71,17 +50,15 @@ instance=Master
 interval=once
 signal=10
 
-
 # Battery indicator
 [battery]
 color=#F0B116
 label=⚡
 interval=30
 
-
 # Wireguard Interface Address
 [iface]
-instance=azirevpn-us1
+instance=azirevpn-ca1
 label=VPN
 color=#FFFF01
 interval=10

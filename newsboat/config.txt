@@ -1,7 +1,0 @@
-browser firefox
-
-color   info                white   black
-color   listnormal          white   black
-color   listfocus           black   white
-color   listnormal_unread   white   black
-color   listfocus_unread    black   white
