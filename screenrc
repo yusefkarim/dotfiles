@@ -1,0 +1,59 @@
+# ----------- Useful Commands -----------
+# Ctrl+a ? Displays commands and their defaults
+# Ctrl+a \ Close all windows and quit screen competeley
+# Ctrl+a : Enter to the command prompt of screen
+# Ctrl+a " Window list
+# Ctrl+a 0 opens window 0
+# Ctrl+a A Rename the current window
+# Ctrl+a a Sends Ctrl+a to the current window
+# Ctrl+a c Create a new window (with shell)
+# Ctrl+a S Split current region horizontally into two regions
+# Ctrl+a | Split current region vertically into two regions
+# Ctrl+a tab Switch the input focus to the next region
+# Ctrl+a Ctrl+a Toggle between current and previous region
+# Ctrl+a Esc Enter Copy Mode (use enter to select a range of text)
+# Ctrl+a ] Paste text
+# Ctrl+a Q Close all regions but the current one
+# Ctrl+a X Close the current region
+# Ctrl+a d Detach from the current screen session, and leave it running.
+#          Use screen -r to resume
+
+# ----------- Configuration -----------
+# No welcome message
+startup_message off
+
+# Assume UTF-8 encoding
+defutf8 on
+
+# Set color of borders and command-line (black background, green foreground)
+rendition so = kg
+
+# Allow bold colors
+attrcolor b ".I"
+
+# Tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# Enables use of shift-PgUp and shift-PgDn
+termcapinfo xterm|xterms|xs|rxvt ti@:te@
+
+# Erase background with current bg color
+defbce "on"
+
+# Enable 256 color term
+term xterm-256color
+
+# Mouse tracking allows to switch region focus by clicking
+mousetrack on
+
+# Cache 5000 lines for scroll back
+defscrollback 5000
+
+# Turn visual bell off (gets rid of flickering)
+vbell off
+
+# Clear screen when exiting text editor
+altscreen on
+
+# Enable scrolling if using X
+termcapinfo xterm* ti@:te@
