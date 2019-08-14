@@ -7,50 +7,69 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')   
 Plug 'morhetz/gruvbox'
-Plug 'donRaphaco/neotex', { 'for': 'tex' }
 Plug 'ap/vim-buftabline'
 Plug 'w0rp/ale'
 Plug 'mmai/vim-markdown-wiki'
+Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " Gruvbox colorscheme/plugin
 let g:gruvbox_guisp_fallback = "bg"  " Fix gruxbox spell check highlighting
+set termguicolors
 set background=dark
 colorscheme gruvbox
-
-" NeoTex plugin
-let g:tex_flavor = 'latex'
-let g:neotex_pdflatex_alternative = "lualatex"
-let g:neotex_pdflatex_add_options = "-output-directory=output"
-let g:neotex_enabled = 2
 
 " Buftabline plugin
 let g:buftabline_show = 1
 let g:buftabline_plug_max = 0
 
-" FZF plugin
-nmap <C-f> :FZF<CR>
-nmap <C-g> :GFiles<CR>
-nmap <C-s> :Lines<CR>
+" NERD Commenter plugin
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+nnoremap <C-c> :call NERDComment(0,"toggle")<CR>
+vnoremap <C-c> :call NERDComment(0,"toggle")<CR>
+
+" fzf plugin
+nnoremap <C-f> :FZF<CR>
+nnoremap <C-g> :GFiles<CR>
+nnoremap <C-s> :Lines<CR>
+let g:fzf_layout = { 'window': 'rightbelow 15new' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " ALE plugin
-" Make sure to install flake8 for Python3
+" Make sure to install flake8 for Python3, eslint for JS
 "let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '✘➤'
 let g:ale_sign_warning = '⚑➤'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
-let g:ale_linters = {'python': ['flake8'], 'c': ['gcc']}
+"let g:ale_linters = {'python': ['flake8'], 'c': ['gcc', 'cppcheck']}
+let g:ale_linters = {'python': ['flake8'], 'c': ['gcc'], 
+                   \ 'javascript': ['eslint']}
+let b:ale_fixers = {'javascript': ['eslint']}
 let g:ale_c_gcc_options = '-Wall -Wextra -Wunused -Wpedantic'
 command ST let g:ale_c_gcc_executable = 'arm-none-eabi-gcc' |
             \ let g:ale_c_gcc_options .= ' -I../CMSIS/inc -Iinc' |
             \ ALELint
 
 " Ctrl+k will go to previous syntax error, Ctrl+j will go to next syntax error
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nnoremap <silent> <C-k> <Plug>(ale_previous_wrap)
+nnoremap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " Statusline (relies on ALE)
 function! LinterStatus() abort
@@ -60,14 +79,14 @@ function! LinterStatus() abort
         if l:error['lnum'] == line('.')
             return ""
         else
-            hi statusline guifg=#fb4934 guibg=NONE ctermfg=167 ctermbg=NONE
+            hi statusline gui=underline guifg=#fb4934 guibg=NONE cterm=underline ctermfg=167 ctermbg=NONE
             return l:error['lnum']."--➤".l:error['text']
         endif
     elseif len(l:warning)
         if l:warning['lnum'] == line('.')
             return ""
         else
-            hi statusline guifg=#fabd2f guibg=NONE ctermfg=214 ctermbg=NONE
+            hi statusline gui=underline guifg=#fabd2f guibg=NONE cterm=underline ctermfg=214 ctermbg=NONE
             return l:warning['lnum']."--➤".l:warning['text']
         endif
     else
@@ -75,6 +94,7 @@ function! LinterStatus() abort
         return "✓✓"
     endif
 endfunction
+
 
 set statusline=%{LinterStatus()}
 set statusline+=%#Normal#
@@ -91,65 +111,81 @@ set foldlevel=99
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
-set laststatus=2    " Statusline
-set lazyredraw      " Faster scrolling when syntax is on
-set nobackup        " No file backups
-set shiftwidth=4    " Number of characters to indent by
-set tabstop=4       " Indentation for tab key
-set expandtab       " Expand Tab as spaces
-set smarttab        " Higher IQ tabs
-set encoding=utf8   " UTF8 support
-set nu              " Enables line numbers
-set ai              " Auto indent
-set si              " Smart indent
-set cursorline      " Highlight current line
-"set textwidth=80    " Start new line after n characters
-"set wrap            " Enable soft wrapping
-set linebreak       " Move wrapped content to new line
-set breakindent     " Line up indentation of wrapped content 
-" Smart comments
-set comments=s1:/*,mb:\ *,elx:\ */
-set showmatch       " Highlight matching brackets
-set incsearch       " Start searching during typing
-set hlsearch        " Highlight all matches
-" Clear search results when Enter is pressed
-nnoremap <silent> <CR> :noh<CR><CR>
-" Get rid of vim sounds
-set noerrorbells
-set novisualbell
+set laststatus=2                    " Statusline
+set lazyredraw                      " Faster scrolling when syntax is on
+set nobackup                        " No file backups
+set shiftwidth=4                    " Number of characters to indent by
+set tabstop=4                       " Indentation for tab key
+set expandtab                       " Expand Tab as spaces
+set smarttab                        " Higher IQ tabs
+set encoding=utf8                   " UTF8 support
+set nu                              " Enables line numbers
+set ai                              " Auto indent
+set si                              " Smart indent
+set cursorline                      " Highlight current line
+"set textwidth=80                    " Start new line after n characters
+"set wrap                            " Enable soft wrapping
+set linebreak                       " Move wrapped content to new line
+set breakindent                     " Line up indentation of wrapped content 
+set comments=s1:/*,mb:\ *,elx:\ */  " Smart comments
+set showmatch                       " Highlight matching brackets
+set incsearch                       " Start searching during typing
+set hlsearch                        " Highlight all matches
+set ignorecase                      " Ignore case when searching
+set smartcase                       " Case-sensitive if captial letters are used
+set noerrorbells                    " Get rid of bell sounds
+set novisualbell                    " Get rid of bell flashes
 
 " Filetype specific commands
 autocmd FileType css setlocal shiftwidth=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
 
 " Disable Page Up/Down in insert mode
-imap <PageDown> <Nop>
-imap <PageUp> <Nop>
+inoremap <PageDown> <Nop>
+inoremap <PageUp> <Nop>
+" Exit terminal insert mode with Esc
+tnoremap <Esc> <C-\><C-n>
+" Open file/directory tree with Ctrl+n
+nnoremap <C-n> :Ntree<CR>
+" Clear search results when Enter is pressed
+nnoremap <silent> <CR> :noh<CR><CR>
 
 " Pressing F1 will write file, in normal and insert mode
-nmap <F1> :w<CR>
-imap <F1> <ESC>:w<CR>
-
+nnoremap <F1> :w<CR>
+inoremap <F1> <ESC>:w<CR>
 " Change between buffers with F2 and F4, F3 will close current buffer
-nmap <F2> :bprev<CR>
-nmap <F3> :bd<CR>
-nmap <F4> :bnext<CR>
-
+nnoremap <F2> :bprev<CR>
+nnoremap <F3> :bd<CR>
+nnoremap <F4> :bnext<CR>
 " Change current window with F5
-nmap <F5> <C-w><C-w>
+nnoremap <F5> <C-w><C-w>
+
+" Ctrl-t will use lualatex to create a pdf of the current latex file then
+" display it with evince
+" NOTE: If using the minted package, specify the output directory when
+" importing: \usepackage[outputdir=/tmp]{minted}
+nnoremap <C-t> :!rm -rf /tmp/_minted*
+    \ && lualatex -shell-escape -output-directory=/tmp % 2>&1 > /dev/null
+    \ && mv /tmp/%:r.pdf . 2>&1 > /dev/null
+    \ && evince %:r.pdf 2>&1 > /dev/null &<CR><CR>
 
 " My commands
 " :CC compiles and runs the current file
-command CC !clear && cc % && ./a.out && rm a.out
+command CC !cc % && ./a.out && rm a.out
 " :CCM compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
 command CCM !cc % -lm && ./a.out && rm a.out
 " Run current Python3 script
-command PY !clear && /usr/bin/python3 %
+command PY :term /usr/bin/env python3 %
 " Priviliged Python3 script
-command PPY !clear && sudo /usr/bin/python3 %
+command PPY :term sudo /usr/bin/env python3 %
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
 " Output current date at cursor
 command DATE :put =strftime('%A %Y-%m-%d %I:%M %p')
+
+" Overwrite default error/warning colorscheme for ALE
+hi ALEError gui=underline guifg=#fb4934 guibg=NONE cterm=underline ctermfg=167 ctermbg=NONE
+hi ALEWarning gui=underline guifg=#fabd2f guibg=NONE cterm=underline ctermfg=214 ctermbg=NONE

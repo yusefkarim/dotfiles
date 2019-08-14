@@ -20,7 +20,7 @@ default_border pixel 2
     # Launch dmenu
     bindsym $alt+d exec $menu
 	# Open wiki
-	bindsym $alt+w exec xterm -maximized -e vim ~/Documents/wiki/index.md
+	bindsym $alt+w exec xterm -maximized -e nvim ~/Documents/wiki/index.md
         # Redshift screen
 	bindsym $alt+r exec xrandr --output eDP1 --gamma 1.0:0.769:0.524
         # Clear redshift setting
@@ -47,7 +47,7 @@ bindsym $mod+q kill
 #Step 3: Change the command below to reflect device id and property id
 #	     DEVICE ID;  ;PROPERTY ID
 # Enable tapping
-exec xinput set-prop 11 282 1
+exec xinput set-prop 11 296 1
 
 ### Moving around
 	# Use Mouse+$mod to drag floating windows to their wanted position
@@ -110,6 +110,7 @@ exec xinput set-prop 11 282 1
     # Laptop screen and HDMI
     bindsym $mod+Shift+b exec xrandr --output HDMI2 --auto --above eDP1
     bindsym $mod+Shift+m exec xrandr --output eDP1 --same-as HDMI2
+    bindsym $mod+Shift+v exec xrandr --output HDMI2 --auto --rotate left --above eDP1
 
     # Dedicated HDMI2 workspaces
     workspace 9 output HDMI2

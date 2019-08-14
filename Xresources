@@ -16,7 +16,10 @@ XTerm*cutNewline		: false
 XTerm*on2Clicks			: word
 XTerm*on3Clicks			: line
 
-! Gruvbox-like colorscheme
+! #### Other Xorg Configs ####
+Xcursor.size: 28
+
+! #### Gruvbox-like colorscheme ####
 XTerm*background: #1d2021
 XTerm*foreground: #ebdbb2
 ! Black + DarkGrey

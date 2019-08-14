@@ -19,6 +19,15 @@
 #          Use screen -r to resume
 
 # ----------- Configuration -----------
+hardstatus alwayslastline
+hardstatus string '%{= kd} %{= kd}%-w%{= kr}[%{= kW}%n %t%{= kr}]%{= kd}%+w %-= %{kG} %H%{kW} | %D %M %d %Y%{= kc} %C%A%{-}'
+
+# Start at window 1, instead of 0
+bind c screen 1
+bind ^c screen 1
+bind 0 select 10
+screen 1
+
 # No welcome message
 startup_message off
 
@@ -42,9 +51,6 @@ defbce "on"
 
 # Enable 256 color term
 term xterm-256color
-
-# Mouse tracking allows to switch region focus by clicking
-mousetrack on
 
 # Cache 5000 lines for scroll back
 defscrollback 5000
