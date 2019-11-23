@@ -6,21 +6,23 @@ set $mod Mod4
 set $alt Mod1
 # Application launcher
 set $menu dmenu_run
+# Terminal Emulator
+set $term alacritty
 
 #Font for window titles and bar
-font pango:DejaVu Sans Mono 12
+font pango:RobotoMono 12
 #Top window border width
 default_border pixel 2
 
 ### Key bindings, applications
 	# Start a terminal
-	bindsym $alt+t exec xterm
+	bindsym $alt+t exec $term
 	# Start firefox
 	bindsym $alt+f exec firefox
     # Launch dmenu
     bindsym $alt+d exec $menu
 	# Open wiki
-	bindsym $alt+w exec xterm -maximized -e nvim ~/Documents/wiki/index.md
+	bindsym $alt+w exec $term -e nvim ~/Documents/wiki/index.md
     # Redshift screen
 	bindsym $alt+r exec xrandr --output eDP1 --gamma 1.0:0.769:0.524 || \
                         xrandr --output HDMI2 --gamma 1.0:0.769:0.524
