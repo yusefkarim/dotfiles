@@ -21,15 +21,17 @@ default_border pixel 2
     bindsym $alt+d exec $menu
 	# Open wiki
 	bindsym $alt+w exec xterm -maximized -e nvim ~/Documents/wiki/index.md
-        # Redshift screen
-	bindsym $alt+r exec xrandr --output eDP1 --gamma 1.0:0.769:0.524
-        # Clear redshift setting
-	bindsym $alt+Shift+r exec xrandr --output eDP1 --gamma 1.0:1.0:1.0
+    # Redshift screen
+	bindsym $alt+r exec xrandr --output eDP1 --gamma 1.0:0.769:0.524 || \
+                        xrandr --output HDMI2 --gamma 1.0:0.769:0.524
+    # Clear redshift setting
+	bindsym $alt+Shift+r exec xrandr --output eDP1 --gamma 1.0:1.0:1.0 || \
+                              xrandr --output HDMI2 --gamma 1.0:1.0:1.0
 	# Run i3lock
 	bindsym $mod+l exec i3lock -ue -c 282828 && sleep 20 && pgrep i3lock && xset dpms force off
 
 ### Key bindings, special
-    	#XF86 buttons and stuff
+    # XF86 buttons and stuff
 	bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute && pkill -RTMIN+10 i3blocks
 	bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute && pkill -RTMIN+10 i3blocks
 	bindsym XF86AudioMute exec amixer -q set Master toggle && pkill -RTMIN+10 i3blocks
@@ -47,14 +49,15 @@ bindsym $mod+q kill
 #Step 3: Change the command below to reflect device id and property id
 #	     DEVICE ID;  ;PROPERTY ID
 # Enable tapping
-exec xinput set-prop 11 296 1
+exec xinput set-prop "Synaptics TM3072-003" "libinput Tapping Enabled" 1
+exec xinput set-prop "Synaptics TM3072-003" "libinput Accel Speed" 0.5
 
 ### Moving around
 	# Use Mouse+$mod to drag floating windows to their wanted position
 	floating_modifier $mod
 
 	# Move focus
-        bindsym $mod+Left focus left
+    bindsym $mod+Left focus left
 	bindsym $mod+Down focus down
 	bindsym $mod+Up focus up
 	bindsym $mod+Right focus right
@@ -106,11 +109,11 @@ exec xinput set-prop 11 296 1
     # Laptop screen
     bindsym $mod+Shift+l exec xrandr --output HDMI2 --off --output eDP1 --auto
     # HDMI
-    bindsym $mod+Shift+h exec xrandr --output HDMI2 --auto --output eDP1 --off
+    bindsym $mod+Shift+h exec xrandr --output HDMI2 --mode 2560x1600 --output eDP1 --off
     # Laptop screen and HDMI
-    bindsym $mod+Shift+b exec xrandr --output HDMI2 --auto --above eDP1
-    bindsym $mod+Shift+m exec xrandr --output eDP1 --same-as HDMI2
-    bindsym $mod+Shift+v exec xrandr --output HDMI2 --auto --rotate left --above eDP1
+    bindsym $mod+Shift+b exec xrandr --output HDMI2 --mode 2560x1600 --above eDP1
+    bindsym $mod+Shift+m exec xrandr --output HDMI2 --mode 2560x1600 --same-as eDP1
+    bindsym $mod+Shift+v exec xrandr --output HDMI2 --mode 2560x1600 --rotate left --above eDP1
 
     # Dedicated HDMI2 workspaces
     workspace 9 output HDMI2

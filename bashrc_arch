@@ -50,8 +50,8 @@ alias pacli='pacman -Qqe'
 # ------ Functions -----
 # Accepts command and a file, detaches process from terminal completely
 detach() { "$1" "$2" 2>&1 > /dev/null & disown; }
-#vpn() { wg-quick "$1" azirevpn-ca1; }
-vpn() { wg-quick "$1" azirevpn-us1; }
+vpn() { wg-quick "$1" azire; }
+select_network() {  wpa_cli -i wlp4s0 select_network $(wpa_cli -i wlp4s0 list_networks | grep "$1" | cut -f 1); }
 img() { feh -xZ --scale-down -B black "$1" 2>&1 > /dev/null & disown; }
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
 mydd() { sudo dd bs=4M if="$1" of="$2" status=progress oflag=sync; }
@@ -59,6 +59,11 @@ mydd() { sudo dd bs=4M if="$1" of="$2" status=progress oflag=sync; }
 d2h() { printf "0x%x\n" $1; }
 # Hexadecimal (without 0x) to ascii
 h2a() { echo -n $1 | xxd -ps -r; }
+# Install arch-wiki-docs
+archfind() { find /usr/share/doc/arch-wiki/html/en/ -iname "*$1*" -exec basename {} .html ';';  }
+archview() { firefox /usr/share/doc/arch-wiki/html/en/$1.html; }
+# openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
+# sudo trust anchor -v $1.crt
 
 # ------ Other stuff -----
 alias lh='ls -lh'
@@ -70,14 +75,16 @@ alias android='sudo jmtpfs /mnt'
 # Install evince-light from aur
 alias pdf='detach evince'
 alias mupdf='detach mupdf'
-alias gedit='detach gedit'
+alias epub='detach foliate'
+alias doc='detach libreoffice'
 alias wiki='vim ~/Documents/wiki/index.md'
 alias httpserver='python -m http.server'
 alias netstat='sudo ss -nltup'
 alias scanwifi='sudo iw dev wlp4s0 scan | less'
 
-# ------ screen command for serial communication (pi/beaglebone) -----
-serial() { sudo screen -L $1 115200,cs8,-parenb,-cstopb,-hupcl; }
+# ------ screen command for serial communication -----
+serial() { sudo screen $1 $2,cs8,-parenb,-cstopb,-hupcl; }
+serial_log() { sudo screen -L $1 $2,cs8,-parenb,-cstopb,-hupcl; }
 # ------ Assemble, link and dump shellcode -----
 shellcode() { as "$1".s -o "$1".o && ld "$1".o -N -o "$1" && objcopy -O binary "$1" "$1".bin; }
 # ------ ssh things -----

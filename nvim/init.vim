@@ -13,6 +13,7 @@ Plug 'mmai/vim-markdown-wiki'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'cespare/vim-toml'
 call plug#end()
 
 " Gruvbox colorscheme/plugin
@@ -59,17 +60,17 @@ let g:ale_sign_error = '✘➤'
 let g:ale_sign_warning = '⚑➤'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 "let g:ale_linters = {'python': ['flake8'], 'c': ['gcc', 'cppcheck']}
-let g:ale_linters = {'python': ['flake8'], 'c': ['gcc'], 
+" \ 'rust': ['cargo', 'rls'],
+let g:ale_linters = {'python': ['flake8'],
+                   \ 'rust': ['cargo'],
+                   \ 'c': ['gcc'], 
                    \ 'javascript': ['eslint']}
 let b:ale_fixers = {'javascript': ['eslint']}
+let g:ale_rust_cargo_use_clippy = 1
 let g:ale_c_gcc_options = '-Wall -Wextra -Wunused -Wpedantic'
 command ST let g:ale_c_gcc_executable = 'arm-none-eabi-gcc' |
             \ let g:ale_c_gcc_options .= ' -I../CMSIS/inc -Iinc' |
             \ ALELint
-
-" Ctrl+k will go to previous syntax error, Ctrl+j will go to next syntax error
-nnoremap <silent> <C-k> <Plug>(ale_previous_wrap)
-nnoremap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " Statusline (relies on ALE)
 function! LinterStatus() abort
@@ -123,6 +124,7 @@ set nu                              " Enables line numbers
 set ai                              " Auto indent
 set si                              " Smart indent
 set cursorline                      " Highlight current line
+set colorcolumn=81                  " Highlight the nth column 
 "set textwidth=80                    " Start new line after n characters
 "set wrap                            " Enable soft wrapping
 set linebreak                       " Move wrapped content to new line
@@ -142,6 +144,7 @@ autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
+" autocmd BufRead,BufNewFile *.svelte setfiletype html
 
 " Disable Page Up/Down in insert mode
 inoremap <PageDown> <Nop>
@@ -157,11 +160,15 @@ nnoremap <silent> <CR> :noh<CR><CR>
 nnoremap <F1> :w<CR>
 inoremap <F1> <ESC>:w<CR>
 " Change between buffers with F2 and F4, F3 will close current buffer
-nnoremap <F2> :bprev<CR>
-nnoremap <F3> :bd<CR>
-nnoremap <F4> :bnext<CR>
+nnoremap <silent> <F2> :bprev<CR>
+nnoremap <silent> <F3> :bd<CR>
+nnoremap <silent> <F4> :bnext<CR>
 " Change current window with F5
-nnoremap <F5> <C-w><C-w>
+nnoremap <silent> <F5> <C-w><C-w>
+" ALE shortcuts, F6 to prev error, F7 to run ALEDetail, F8 to next error
+nnoremap <silent> <F6> :ALEPrevious<CR>
+nnoremap <silent> <F7> :ALEDetail<CR>
+nnoremap <silent> <F8> :ALENext<CR>
 
 " Ctrl-t will use lualatex to create a pdf of the current latex file then
 " display it with evince
@@ -169,8 +176,8 @@ nnoremap <F5> <C-w><C-w>
 " importing: \usepackage[outputdir=/tmp]{minted}
 nnoremap <C-t> :!rm -rf /tmp/_minted*
     \ && lualatex -shell-escape -output-directory=/tmp % 2>&1 > /dev/null
-    \ && mv /tmp/%:r.pdf . 2>&1 > /dev/null
-    \ && evince %:r.pdf 2>&1 > /dev/null &<CR><CR>
+    \ && mv /tmp/%:t:r.pdf . 2>&1 > /dev/null
+    \ && evince %:t:r.pdf 2>&1 > /dev/null &<CR><CR>
 
 " My commands
 " :CC compiles and runs the current file
@@ -185,7 +192,22 @@ command PPY :term sudo /usr/bin/env python3 %
 command JSON !python3 -m json.tool % > %.json
 " Output current date at cursor
 command DATE :put =strftime('%A %Y-%m-%d %I:%M %p')
+" Run cargo build (rust)
+command RB !cargo build
+function! CargoRun()
+    if match(expand('%:p'), "bin") > 0
+        echo "Running binary " . expand('%:t')
+        !cargo run --bin %:t:r
+    else
+        echo "Running " . expand('%:t')
+        !cargo run
+    endif
+endfunction
+" Run cargo run (rust)
+command RR call CargoRun()
 
 " Overwrite default error/warning colorscheme for ALE
-hi ALEError gui=underline guifg=#fb4934 guibg=NONE cterm=underline ctermfg=167 ctermbg=NONE
-hi ALEWarning gui=underline guifg=#fabd2f guibg=NONE cterm=underline ctermfg=214 ctermbg=NONE
+" hi ALEError gui=underline guifg=#fb4934 guibg=NONE cterm=underline ctermfg=167 ctermbg=NONE
+" hi ALEWarning gui=underline guifg=#fabd2f guibg=NONE cterm=underline ctermfg=214 ctermbg=NONE
+hi ALEError gui=None guifg=NONE guibg=NONE cterm=None ctermfg=NONE ctermbg=NONE
+hi ALEWarning gui=None guifg=NONE guibg=NONE cterm=None ctermfg=NONE ctermbg=NONE

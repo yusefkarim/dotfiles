@@ -4,12 +4,12 @@
 separator_block_width=15
 markup=none
 
-#Path to default scripts
-command=/usr/lib/i3blocks/$BLOCK_NAME
+# Path to default scripts
+command=/home/cuyler/.config/i3blocks/contrib/$BLOCK_NAME/$BLOCK_NAME
 
 [system]
 color=#66D9EF
-label=Arch
+label=Arch 
 command=uname -sr | awk -F- '{print $1}'
 interval=once
 
@@ -19,22 +19,21 @@ interval=once
 signal=11
 
 # Memory usage
-[ram]
-command=free | awk '/Mem/ {printf("%.2f%", ($3/$2)*100)}'
+[memory]
+label=MEM 
 color=#DC2672
-label=MEM
 interval=30
 
-[swap]
-command=free | awk '/Swap/ {printf("%.2f%", ($3/$2)*100)}'
-color=#CC65FE
-label=SWAP
-interval=30
+# [memory]
+# color=#CC65FE
+# label=SWAP 
+# instance=swap
+# interval=30
 
 # CPU usage
 [cpu_usage]
 color=#FD452D
-label=CPU
+label=CPU 
 interval=10
 min_width=CPU: 100%
 #separator=false
@@ -43,7 +42,7 @@ min_width=CPU: 100%
 [volume]
 color=#FD841F
 #color=#AE7299
-label=VOL
+label=VOL 
 #label=♪
 instance=Master
 #instance=PCM
@@ -58,15 +57,15 @@ interval=30
 
 # Wireguard Interface Address
 [iface]
-instance=azirevpn-ca1
-label=VPN
+instance=azire
+label=VPN 
 color=#FFFF01
 interval=10
 
 # Wifi Interface Address
 [iface]
 instance=wlp4s0
-label=IP
+label=IP 
 color=#00FF00
 interval=10
 
