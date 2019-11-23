@@ -10,7 +10,7 @@ set $menu dmenu_run
 set $term alacritty
 
 #Font for window titles and bar
-font pango:RobotoMono 12
+font pango:Hack 12
 #Top window border width
 default_border pixel 2
 

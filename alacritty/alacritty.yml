@@ -36,15 +36,15 @@ dpi:
 
 font:
   normal:
-    family: RobotoMono
+    family: Hack
     style: Regular
 
   bold:
-    family: RobotoMono
+    family: Hack
     style: Bold
 
   italic:
-    family: RobotoMono
+    family: Hack
     style: Italic
 
   size: 12.0
