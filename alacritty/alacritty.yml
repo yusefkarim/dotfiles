@@ -1,8 +1,9 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
-# env:
+env:
   # TERM: xterm-256color
   # TERM: alacritty
+  WINIT_HIDPI_FACTOR: "1"
 
 window:
   dimensions:
@@ -25,14 +26,9 @@ window:
 scrolling:
   history: 10000
   multiplier: 3
-  faux_multiplier: 3
   auto_scroll: false
 
 tabspaces: 4
-
-dpi:
-  x: 90.0
-  y: 90.0
 
 font:
   normal:
@@ -47,7 +43,7 @@ font:
     family: Hack
     style: Italic
 
-  size: 12.0
+  size: 12
   offset:
     x: 0
     y: 0
@@ -140,15 +136,15 @@ debug:
   ref_test: false
 
 key_bindings:
-  #- { key: V,        mods: Control|Shift, action: Paste            }
-  #- { key: C,        mods: Control|Shift, action: Copy             }
-  #- { key: Insert,   mods: Shift,         action: PasteSelection   }
-  #- { key: Key0,     mods: Control,       action: ResetFontSize    }
-  #- { key: Equals,   mods: Control,       action: IncreaseFontSize }
-  #- { key: Add,      mods: Control,       action: IncreaseFontSize }
-  #- { key: Subtract, mods: Control,       action: DecreaseFontSize }
-  #- { key: Minus,    mods: Control,       action: DecreaseFontSize }
-  #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
+  - { key: V,        mods: Control|Shift, action: Paste            }
+  - { key: C,        mods: Control|Shift, action: Copy             }
+  - { key: Insert,   mods: Shift,         action: PasteSelection   }
+  - { key: Key0,     mods: Control,       action: ResetFontSize    }
+  - { key: Equals,   mods: Control,       action: IncreaseFontSize }
+  - { key: Add,      mods: Control,       action: IncreaseFontSize }
+  - { key: Subtract, mods: Control,       action: DecreaseFontSize }
+  - { key: Minus,    mods: Control,       action: DecreaseFontSize }
+  - { key: Return,   mods: Alt,           action: ToggleFullscreen }
   - { key: Paste,                   action: Paste                            }
   - { key: Copy,                    action: Copy                             }
   - { key: L,        mods: Control, action: ClearLogNotice                   }

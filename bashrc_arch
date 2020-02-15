@@ -10,8 +10,12 @@ RED=$(tput setaf 197)
 ORANGE=$(tput setaf 208)
 BLUE=$(tput setaf 037)
 GREEN=$(tput setaf 148)
+PURPLE=$(tput setaf 98)
 
-PS1='\[${GRAY}\][\[${RED}\]\u\[${WHITE}\]@\[${BLUE}\]\h \[${GREEN}\]\W\[${GRAY}\]]\[${ORANGE}\]\$\[${WHITE}\] '
+if [ -n "$SSH_CLIENT" ]; then SSH="[SSH]"
+fi
+
+PS1='\[${GRAY}\][\[${RED}\]\u\[${WHITE}\]@\[${BLUE}\]\h \[${GREEN}\]\W\[${GRAY}\]]\[${PURPLE}\]${SSH}\[${ORANGE}\]\$\[${WHITE}\] '
 
 # Change terminal cursor to steady underline
 echo -e -n "\x1b[\x34 q"
@@ -62,6 +66,8 @@ h2a() { echo -n $1 | xxd -ps -r; }
 # Install arch-wiki-docs
 archfind() { find /usr/share/doc/arch-wiki/html/en/ -iname "*$1*" -exec basename {} .html ';';  }
 archview() { firefox /usr/share/doc/arch-wiki/html/en/$1.html; }
+wg-gen() { wg genkey | tee $1 | wg pubkey > $1.pub; }
+# ssh-keygen -t rsa
 # openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
 # sudo trust anchor -v $1.crt
 
@@ -78,9 +84,11 @@ alias mupdf='detach mupdf'
 alias epub='detach foliate'
 alias doc='detach libreoffice'
 alias wiki='vim ~/Documents/wiki/index.md'
+alias md='grip -b --quiet --user-content --wide'
 alias httpserver='python -m http.server'
-alias netstat='sudo ss -nltup'
 alias scanwifi='sudo iw dev wlp4s0 scan | less'
+alias hdmi='xrandr --output HDMI2 --mode 2560x1600 --output eDP1 --off'
+alias sound='pulsemixer'
 
 # ------ screen command for serial communication -----
 serial() { sudo screen $1 $2,cs8,-parenb,-cstopb,-hupcl; }
@@ -88,6 +96,5 @@ serial_log() { sudo screen -L $1 $2,cs8,-parenb,-cstopb,-hupcl; }
 # ------ Assemble, link and dump shellcode -----
 shellcode() { as "$1".s -o "$1".o && ld "$1".o -N -o "$1" && objcopy -O binary "$1" "$1".bin; }
 # ------ ssh things -----
-beagle () { ssh -i ~/.ssh/beagle -p 27385 99.254.22.135; }
 cmssh () { ssh -i ~/.ssh/node_cmadmin -p 27385 cmadmin@$1; }
-cmfs () { sshfs root@172.16.50.154:/root/mxp_docker/mxp ~/CM/mxp; }
+cmfs () { sshfs root@172.16.50.152:/root/mxp_docker/mxp ~/CM/mxp; }

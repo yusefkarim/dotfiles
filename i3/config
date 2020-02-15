@@ -111,11 +111,11 @@ exec xinput set-prop "Synaptics TM3072-003" "libinput Accel Speed" 0.5
     # Laptop screen
     bindsym $mod+Shift+l exec xrandr --output HDMI2 --off --output eDP1 --auto
     # HDMI
-    bindsym $mod+Shift+h exec xrandr --output HDMI2 --mode 2560x1600 --output eDP1 --off
+    bindsym $mod+Shift+h exec xrandr --output HDMI2 --auto --output eDP1 --off
     # Laptop screen and HDMI
-    bindsym $mod+Shift+b exec xrandr --output HDMI2 --mode 2560x1600 --above eDP1
-    bindsym $mod+Shift+m exec xrandr --output HDMI2 --mode 2560x1600 --same-as eDP1
-    bindsym $mod+Shift+v exec xrandr --output HDMI2 --mode 2560x1600 --rotate left --above eDP1
+    bindsym $mod+Shift+b exec xrandr --output HDMI2 --auto --above eDP1
+    bindsym $mod+Shift+m exec xrandr --output HDMI2 --auto --same-as eDP1
+    bindsym $mod+Shift+v exec xrandr --output HDMI2 --auto --rotate left --above eDP1
 
     # Dedicated HDMI2 workspaces
     workspace 9 output HDMI2
@@ -166,7 +166,7 @@ mode "resize" {
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 
 bar {
-	status_command SCRIPT_DIR=~/.config/i3blocks/blocklets i3blocks
+    status_command i3blocks
 	position top
 	colors {
 		statusline #ffffff

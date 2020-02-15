@@ -6,21 +6,24 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')   
-Plug 'morhetz/gruvbox'
+Plug 'lifepillar/vim-gruvbox8'
 Plug 'ap/vim-buftabline'
 Plug 'w0rp/ale'
 Plug 'mmai/vim-markdown-wiki'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'cespare/vim-toml'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 " Gruvbox colorscheme/plugin
 let g:gruvbox_guisp_fallback = "bg"  " Fix gruxbox spell check highlighting
 set termguicolors
 set background=dark
-colorscheme gruvbox
+colorscheme gruvbox8
+let g:gruvbox_filetype_hi_groups = 1
+let g:gruvbox_plugin_hi_groups = 1
+" let g:gruvbox_italicize_strings = 0
 
 " Buftabline plugin
 let g:buftabline_show = 1
@@ -59,13 +62,13 @@ let g:ale_sign_column_always = 1
 let g:ale_sign_error = '✘➤'
 let g:ale_sign_warning = '⚑➤'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
-"let g:ale_linters = {'python': ['flake8'], 'c': ['gcc', 'cppcheck']}
-" \ 'rust': ['cargo', 'rls'],
 let g:ale_linters = {'python': ['flake8'],
                    \ 'rust': ['cargo'],
+                   \ 'go': ['gofmt'],
                    \ 'c': ['gcc'], 
                    \ 'javascript': ['eslint']}
-let b:ale_fixers = {'javascript': ['eslint']}
+let b:ale_fixers = {'rust': ['rustfmt'],
+                  \ 'javascript': ['eslint']}
 let g:ale_rust_cargo_use_clippy = 1
 let g:ale_c_gcc_options = '-Wall -Wextra -Wunused -Wpedantic'
 command ST let g:ale_c_gcc_executable = 'arm-none-eabi-gcc' |
@@ -95,7 +98,6 @@ function! LinterStatus() abort
         return "✓✓"
     endif
 endfunction
-
 
 set statusline=%{LinterStatus()}
 set statusline+=%#Normal#
@@ -144,7 +146,7 @@ autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
-" autocmd BufRead,BufNewFile *.svelte setfiletype html
+autocmd BufRead,BufNewFile *.svelte setfiletype html
 
 " Disable Page Up/Down in insert mode
 inoremap <PageDown> <Nop>
@@ -188,6 +190,8 @@ command CCM !cc % -lm && ./a.out && rm a.out
 command PY :term /usr/bin/env python3 %
 " Priviliged Python3 script
 command PPY :term sudo /usr/bin/env python3 %
+" Run current NodeJS script
+command NO :term /bin/node %
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
 " Output current date at cursor
@@ -207,7 +211,5 @@ endfunction
 command RR call CargoRun()
 
 " Overwrite default error/warning colorscheme for ALE
-" hi ALEError gui=underline guifg=#fb4934 guibg=NONE cterm=underline ctermfg=167 ctermbg=NONE
-" hi ALEWarning gui=underline guifg=#fabd2f guibg=NONE cterm=underline ctermfg=214 ctermbg=NONE
 hi ALEError gui=None guifg=NONE guibg=NONE cterm=None ctermfg=NONE ctermbg=NONE
 hi ALEWarning gui=None guifg=NONE guibg=NONE cterm=None ctermfg=NONE ctermbg=NONE
