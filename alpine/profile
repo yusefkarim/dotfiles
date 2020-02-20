@@ -1,0 +1,83 @@
+# ~/.profile
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/home/cuyler/.cargo/bin:$PATH"
+export PAGER=less
+export CHARSET=UTF-8
+export LANG=C.UTF-8
+export LC_COLLATE=C
+umask 022
+
+NORMAL="\[\e[0m\]"
+WHITE="\[\e[38;5;223m\]"
+GRAY="\[\e[38;5;007m\]"
+RED="\[\e[38;5;197m\]"
+ORANGE="\[\e[38;5;208m\]"
+BLUE="\[\e[38;5;037m\]"
+GREEN="\[\e[38;5;148m\]"
+PURPLE="\[\e[38;5;098m\]"
+
+# Colorful shell prompt
+if [ -n "$SSH_CLIENT" ]; then SSH="[SSH]"; fi
+PS1='${GRAY}[${RED}\u${WHITE}@${BLUE}\h ${GREEN}\W${GRAY}]${PURPLE}${SSH}${ORANGE}\$${NORMAL} '
+
+# ----- Pretty colours -----
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# ------ Safety features -----
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+# ------ Package management -----
+alias apkup="doas apk upgrade -Uvvi"
+alias apkin="doas apk add -Uvvi"
+alias apkse="apk search -vvi"
+alias apkre="doas apk del -vvi"
+alias apkli="apk info -vv | sort"
+
+# ------ Functions -----
+# Accepts command and a file, detaches process from terminal completely
+detach() { "$1" "$2" 2>&1 > /dev/null & }
+vpn() { doas wg-quick "$1" azire; }
+select_network() {  wpa_cli -i wlan0 select_network $(wpa_cli -i wlan0 list_networks | grep "$1" | cut -f 1); }
+img() { feh -xZ --scale-down -B black "$1" 2>&1 > /dev/null & }
+compress() { tar -czvf "${1}.tar.gz" "$1"; }
+mydd() { doas dd bs=4M if="$1" of="$2" status=progress oflag=sync; }
+# Decimal to hexadecimal
+d2h() { printf "0x%x\n" $1; }
+# Hexadecimal (without 0x) to ascii
+h2a() { echo -n $1 | xxd -ps -r; }
+wg_gen() { wg genkey | tee $1 | wg pubkey > $1.pub; }
+dhcp() { doas udhcpc -b -R -p /var/run/udhcpc.$1.pid -i $1 -x hostname:vigrid; }
+# ssh-keygen -t rsa
+# openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
+# doas trust anchor -v $1.crt
+
+# ------ Other stuff -----
+alias sway="XDG_RUNTIME_DIR=/tmp sway"
+alias lh='ls -lh'
+alias mnt='doas mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
+# Install jmtpfs from aur
+alias android='doas jmtpfs /mnt'
+# Install evince-light from aur
+alias pdf='detach evince'
+alias mupdf='detach mupdf'
+alias epub='detach foliate'
+alias doc='detach libreoffice'
+alias wiki='vim ~/Documents/wiki/index.md'
+alias md='grip -b --quiet --user-content --wide'
+alias httpserver='python -m http.server'
+alias scanwifi='doas iw dev wlan0 scan | less'
+
+# ------ Serial communication -----
+# TODO: Replace screen with stty
+serial() { doas screen $1 $2,cs8,-parenb,-cstopb,-hupcl; }
+serial_log() { doas screen -L $1 $2,cs8,-parenb,-cstopb,-hupcl; }
+# ------ Assemble, link and dump shellcode -----
+shellcode() { as "$1".s -o "$1".o && ld "$1".o -N -o "$1" && objcopy -O binary "$1" "$1".bin; }
+# ------ SSH things -----
+beagle () { ssh -i ~/.ssh/beagle -p 27385 99.254.22.135; }
+cmssh () { ssh -i ~/.ssh/node_cmadmin -p 27385 cmadmin@$1; }
+cmfs () { sshfs root@172.16.50.152:/root/mxp_docker/mxp ~/CM/mxp; }
+
