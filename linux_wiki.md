@@ -125,7 +125,7 @@ visudo
 
 # Install yucky graphial stuff
 ```
-pacman -S xf86-video-intel xorg xorg-xinit i3-wm ttf-dejavu
+pacman -S xorg xorg-xinit i3-wm  brightnessctl ttf-dejavu ttf-hack
 pacman -S firefox xterm
 pacman -S feh mpv scrot
 ```
