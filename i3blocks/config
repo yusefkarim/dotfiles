@@ -15,6 +15,7 @@ interval=once
 
 [keyindicator]
 instance=CAPS
+# xset -q | grep Caps | awk '{ if($4 == "off"){print "OFF"}else{print "ON"}}'
 interval=once
 signal=11
 

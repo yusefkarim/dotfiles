@@ -14,6 +14,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'mhinz/vim-signify'
 call plug#end()
 
 " Gruvbox colorscheme/plugin
@@ -179,7 +180,7 @@ nnoremap <silent> <F8> :ALENext<CR>
 nnoremap <C-t> :!rm -rf /tmp/_minted*
     \ && lualatex -shell-escape -output-directory=/tmp % 2>&1 > /dev/null
     \ && mv /tmp/%:t:r.pdf . 2>&1 > /dev/null
-    \ && evince %:t:r.pdf 2>&1 > /dev/null &<CR><CR>
+    \ && killall -SIGHUP llpp &<CR><CR>
 
 " My commands
 " :CC compiles and runs the current file

@@ -1,7 +1,7 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
 env:
-  # TERM: xterm-256color
+  TERM: xterm-256color
   # TERM: alacritty
   WINIT_HIDPI_FACTOR: "1"
 

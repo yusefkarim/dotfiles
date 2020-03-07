@@ -16,9 +16,8 @@ if [ -n "$SSH_CLIENT" ]; then SSH="[SSH]"
 fi
 
 PS1='\[${GRAY}\][\[${RED}\]\u\[${WHITE}\]@\[${BLUE}\]\h \[${GREEN}\]\W\[${GRAY}\]]\[${PURPLE}\]${SSH}\[${ORANGE}\]\$\[${WHITE}\] '
+PATH="$HOME/.poetry/bin:$HOME/.cargo/bin:$PATH"
 
-# Change terminal cursor to steady underline
-echo -e -n "\x1b[\x34 q"
 
 # ---------------------------- ALIASES ------------------------------------
 
@@ -67,6 +66,10 @@ h2a() { echo -n $1 | xxd -ps -r; }
 archfind() { find /usr/share/doc/arch-wiki/html/en/ -iname "*$1*" -exec basename {} .html ';';  }
 archview() { firefox /usr/share/doc/arch-wiki/html/en/$1.html; }
 wg-gen() { wg genkey | tee $1 | wg pubkey > $1.pub; }
+md2pdf() { 
+    filename=$(basename -- "$1")
+    pandoc -s --toc --variable urlcolor=blue $1 -o ${filename%.*}.pdf; 
+}
 # ssh-keygen -t rsa
 # openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
 # sudo trust anchor -v $1.crt
@@ -78,9 +81,7 @@ alias mnt='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
 alias ntfs='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022 -t ntfs-3g'
 # Install jmtpfs from aur
 alias android='sudo jmtpfs /mnt'
-# Install evince-light from aur
-alias pdf='detach evince'
-alias mupdf='detach mupdf'
+alias pdf='detach llpp'
 alias epub='detach foliate'
 alias doc='detach libreoffice'
 alias wiki='vim ~/Documents/wiki/index.md'
