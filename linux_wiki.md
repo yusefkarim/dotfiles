@@ -164,7 +164,7 @@ EDITOR=nvim visudo
 
 # Install yucky graphial stuff
 ```sh
-pacman -S xorg xorg-xinit i3-wm  brightnessctl ttf-dejavu ttf-hack
+pacman -S xorg-server xorg-xinit i3-wm  brightnessctl ttf-dejavu ttf-hack
 pacman -S firefox alacritty
 pacman -S feh mpv scrot llpp
 ```
