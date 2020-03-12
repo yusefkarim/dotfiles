@@ -158,7 +158,7 @@ pacman -S sudo wget git
 ```sh
 pacman -S sudo
 useradd -m -G wheel -s /bin/bash USERNAME
-usermod -aG audio,video cuyler
+usermod -aG audio,video USERNAME
 EDITOR=nvim visudo
 ```
 
@@ -171,7 +171,7 @@ pacman -S feh mpv scrot llpp
 
 # Get sound working
 ```sh
-pacman -S alsa-utils alsa-plugins alsa-utils
+pacman -S alsa-utils alsa-plugins pulseaudio pulseaudio-alsa
 echo "options snd_hda_intel index=1" > /etc/modprobe.d/alsa-base.conf
 reboot
 ```
