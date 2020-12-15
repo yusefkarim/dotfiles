@@ -13,11 +13,11 @@ label=Arch
 command=uname -sr | awk -F- '{print $1}'
 interval=once
 
-[keyindicator]
-instance=CAPS
+# [keyindicator]
+# instance=CAPS
 # xset -q | grep Caps | awk '{ if($4 == "off"){print "OFF"}else{print "ON"}}'
-interval=once
-signal=11
+# interval=once
+# signal=11
 
 # Memory usage
 [memory]
@@ -65,10 +65,16 @@ interval=10
 
 # Wifi Interface Address
 [iface]
-instance=wlp4s0
-label=IP 
+instance=wlan0
+label=W 
 color=#00FF00
 interval=10
+
+# [iface]
+# instance=eth0
+# label=E 
+# color=#00FF00
+# interval=10
 
 # Date Time
 [time]

@@ -12,14 +12,11 @@ BLUE=$(tput setaf 037)
 GREEN=$(tput setaf 148)
 PURPLE=$(tput setaf 98)
 
-if [ -n "$SSH_CLIENT" ]; then SSH="[SSH]"
-fi
-
-PS1='\[${GRAY}\][\[${RED}\]\u\[${WHITE}\]@\[${BLUE}\]\h \[${GREEN}\]\W\[${GRAY}\]]\[${PURPLE}\]${SSH}\[${ORANGE}\]\$\[${WHITE}\] '
-PATH="$HOME/.poetry/bin:$HOME/.cargo/bin:$PATH"
-
-
-# ---------------------------- ALIASES ------------------------------------
+# ------ Environment variables -----
+if [ -n "$SSH_CLIENT" ]; then SSH="[SSH]"; fi
+export PS1='\[${GRAY}\][\[${RED}\]\u\[${WHITE}\]@\[${BLUE}\]\h \[${GREEN}\]\W\[${GRAY}\]]\[${PURPLE}\]${SSH}\[${ORANGE}\]\$\[${WHITE}\] '
+export PATH="$HOME/.local/bin/:$HOME/.cargo/bin:$PATH"
+export EDITOR="nvim"
 
 # ----- Pretty colours -----
 alias ls='ls --color=auto'
@@ -54,27 +51,57 @@ alias pacli='pacman -Qqe'
 # Accepts command and a file, detaches process from terminal completely
 detach() { "$1" "$2" 2>&1 > /dev/null & disown; }
 vpn() { wg-quick "$1" azire; }
-select_network() {  wpa_cli -i wlp4s0 select_network $(wpa_cli -i wlp4s0 list_networks | grep "$1" | cut -f 1); }
-img() { feh -xZ --scale-down -B black "$1" 2>&1 > /dev/null & disown; }
+select_network() {  wpa_cli -i wlan0 select_network $(wpa_cli -i wlan0 list_networks | grep "$1" | cut -f 1); }
+img() { feh -xZ --scale-down -B black $1 2>&1 > /dev/null & disown; }
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
+regex() { grep -Po $1 $2; }
 mydd() { sudo dd bs=4M if="$1" of="$2" status=progress oflag=sync; }
 # Decimal to hexadecimal
-d2h() { printf "0x%x\n" $1; }
-# Hexadecimal (without 0x) to ascii
-h2a() { echo -n $1 | xxd -ps -r; }
+d2h() { python3 -c "print(hex($1))"; }
+# Hexadecimal to decimal
+h2d() {  python3 -c "print(int('$1', 16))"; }
+# Binary to decimal
+b2d() {  python3 -c "print(int('$1', 2))"; }
 # Install arch-wiki-docs
 archfind() { find /usr/share/doc/arch-wiki/html/en/ -iname "*$1*" -exec basename {} .html ';';  }
 archview() { firefox /usr/share/doc/arch-wiki/html/en/$1.html; }
 wg-gen() { wg genkey | tee $1 | wg pubkey > $1.pub; }
 md2pdf() { 
     filename=$(basename -- "$1")
-    pandoc -s --toc --variable urlcolor=blue $1 -o ${filename%.*}.pdf; 
+    pandoc $1 -s $2 --pdf-engine=lualatex --highlight-style=breezedark \
+        -f markdown-implicit_figures \
+        -H ~/.config/pandoc/header.tex \
+        -V fontsize=11pt -V geometry:margin=2cm -V urlcolor:blue \
+        -o ${filename%.*}.pdf; 
+    # -V mainfont:DejaVuSansMono
 }
-# ssh-keygen -t rsa
-# openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
-# sudo trust anchor -v $1.crt
+cargo-clean() {
+    find . -type d -name target -exec du -chs {} + | sort -h;
+    read -p "Remove everything shown above [y/n]? " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]
+    then
+        return 1
+    fi
+    find -name target -type d -exec rm -r {} +;
+}
+data() {
+	if ! mountpoint -q ~/.data; then
+		sudo cryptsetup open /dev/sda3 data;
+		sudo mount /dev/mapper/data ~/.data/;
+		cd ~/.data;
+	else
+		cd;
+		sudo umount ~/.data;
+		sudo cryptsetup close data;
+	fi
+}
+# Command for serial communication. Usage: serial DEVICE BAUDRATE
+serial() { sudo picocom -b $2 -f n -y n -d 8 -p 1 --omap delbs -g serial.log $1; }
+# Assemble, link, and dump shellcode
+shellcode() { as "$1".s -o "$1".o && ld "$1".o -N -o "$1" && objcopy -O binary "$1" "$1".bin; }
 
-# ------ Other stuff -----
+# ------ Aliases -----
 alias lh='ls -lh'
 alias mnt='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
 # Install ntfs-3g with pacman
@@ -85,17 +112,20 @@ alias pdf='detach llpp'
 alias epub='detach foliate'
 alias doc='detach libreoffice'
 alias wiki='vim ~/Documents/wiki/index.md'
-alias md='grip -b --quiet --user-content --wide'
+alias news='newsboat'
 alias httpserver='python -m http.server'
-alias scanwifi='sudo iw dev wlp4s0 scan | less'
-alias hdmi='xrandr --output HDMI2 --mode 2560x1600 --output eDP1 --off'
+alias scanwifi='sudo iw dev wlan0 scan'
 alias sound='pulsemixer'
+alias weather='curl wttr.in/Ottawa'
+alias backup='rsync --delete-after -aAXHv $HOME/Documents $HOME/Carleton $HOME/Pictures $HOME/Workspace backup:vigrid/'
+alias backup_tar='tar -czf "laptop_backup_$(date -I).tar.gz" $HOME/Documents $HOME/Carleton $HOME/Pictures $HOME/Workspace'
+# School Config Extension
+[ -f $HOME/Carleton/.bashrc.ext ] && . $HOME/Carleton/.bashrc.ext
 
-# ------ screen command for serial communication -----
-serial() { sudo screen $1 $2,cs8,-parenb,-cstopb,-hupcl; }
-serial_log() { sudo screen -L $1 $2,cs8,-parenb,-cstopb,-hupcl; }
-# ------ Assemble, link and dump shellcode -----
-shellcode() { as "$1".s -o "$1".o && ld "$1".o -N -o "$1" && objcopy -O binary "$1" "$1".bin; }
-# ------ ssh things -----
-cmssh () { ssh -i ~/.ssh/node_cmadmin -p 27385 cmadmin@$1; }
-cmfs () { sshfs root@172.16.50.152:/root/mxp_docker/mxp ~/CM/mxp; }
+# ------ Graveyard -----
+# sudo dd if=/dev/sdX conv=sync,noerror bs=64k | xz -c > cloned.img.xz
+# unxz -c cloned.img.gz | sudo dd of=/dev/sdX
+# ssh-keygen -t rsa
+# openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
+# sudo trust anchor -v $1.crt
+# serial() { sudo screen -L $1 $2,cs8,-parenb,-cstopb,-hupcl; }
