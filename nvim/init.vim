@@ -6,26 +6,80 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')   
-" Plug 'lifepillar/vim-gruvbox8'
 Plug 'junegunn/seoul256.vim'
 Plug 'ap/vim-buftabline'
-Plug 'w0rp/ale'
 Plug 'mmai/vim-markdown-wiki'
 Plug 'scrooloose/nerdcommenter'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'soywod/quicklist.vim'
 Plug 'mhinz/vim-signify'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 call plug#end()
 
 " Gruvbox colorscheme/plugin
 syntax on
+filetype plugin indent on
 set termguicolors
 set background=dark
 " colorscheme gruvbox8
 let g:seoul256_srgb = 1
 let g:seoul256_background = 235
 colorscheme seoul256
+
+" Quicklist
+nmap <C-up> <plug>(quicklist-toggle-qf)
+nmap <up> <plug>(quicklist-prev-item)
+nmap <down> <plug>(quicklist-next-item)
+
+" Language server and autocompletion
+" Install rust-analyzer, clangd, python-language-server, pyls-black, texlab, svls
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+set signcolumn=yes
+lua <<EOF
+
+local nvim_lsp = require'lspconfig'
+
+local on_attach = function(client)
+    require'completion'.on_attach(client)
+end
+
+nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+nvim_lsp.pyls.setup({ on_attach=on_attach })
+nvim_lsp.clangd.setup({ on_attach=on_attach })
+nvim_lsp.texlab.setup({ on_attach=on_attach })
+nvim_lsp.svls.setup({ on_attach=on_attach })
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+  }
+)
+EOF
+nnoremap <silent> <C-d> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <C-h> <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <C-i> <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-s> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <C-x> <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> <C-e> <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+nnoremap <silent> <C-f> <cmd>lua vim.lsp.buf.formatting()<CR>
+
+" Trigger completion with <tab>
+" found in :help completion
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ completion#trigger_completion()
 
 " Buftabline plugin
 let g:buftabline_show = 1
@@ -34,67 +88,7 @@ let g:buftabline_plug_max = 0
 " NERD Commenter plugin
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
-nnoremap <C-c> :call NERDComment(0,"toggle")<CR>
-vnoremap <C-c> :call NERDComment(0,"toggle")<CR>
-
-" fzf plugin
-nnoremap <C-f> :FZF<CR>
-nnoremap <C-g> :GFiles<CR>
-nnoremap <C-s> :Lines<CR>
-let g:fzf_layout = { 'window': 'rightbelow 15new' }
-
-" ALE plugin
-" Make sure to install flake8, black for Python3; eslint for JS;
-" rust-analyzer, clippy, rustfmt for Rust
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '✘➤'
-let g:ale_sign_warning = '⚑➤'
-let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
-" Optionally use 'rust': ['analyzer'] for rust_analyzer
-let g:ale_linters = {'python': ['flake8'],
-                   \ 'rust': ['cargo'],
-                   \ 'tex': ['chktex'],
-                   \ 'go': ['gofmt'],
-                   \ 'c': ['gcc'], 
-                   \ 'javascript': ['eslint']}
-let b:ale_fixers = {'rust': ['rustfmt'],
-                  \ 'python': ['black'],
-                  \ 'javascript': ['eslint']}
-let g:ale_fix_on_save = 1
-let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore E203'
-let g:ale_c_gcc_options = '-Wall -Wextra -Wunused -Wpedantic'
-command ST let g:ale_c_gcc_executable = 'arm-none-eabi-gcc' |
-            \ let g:ale_c_gcc_options .= ' -I../CMSIS/inc -Iinc' |
-            \ ALELint
-
-" Statusline (relies on ALE)
-function! LinterStatus() abort
-    let l:error = ale#statusline#FirstProblem(bufnr(''),'error')
-    let l:warning = ale#statusline#FirstProblem(bufnr(''),'warning')
-    if len(l:error)
-        if l:error['lnum'] == line('.')
-            return ""
-        else
-            hi statusline gui=underline guifg=#fb4934 guibg=NONE cterm=underline ctermfg=167 ctermbg=NONE
-            return l:error['lnum']."--➤".l:error['text']
-        endif
-    elseif len(l:warning)
-        if l:warning['lnum'] == line('.')
-            return ""
-        else
-            hi statusline gui=underline guifg=#fabd2f guibg=NONE cterm=underline ctermfg=214 ctermbg=NONE
-            return l:warning['lnum']."--➤".l:warning['text']
-        endif
-    else
-        hi statusline guifg=#b8bb26 guibg=NONE ctermfg=142 ctermbg=NONE
-        return "✓✓"
-    endif
-endfunction
-
-set statusline=%{LinterStatus()}
-set statusline+=%#Normal#
-set statusline+=%=
-set statusline+=%f\ %y%r\ %l/%L,\ %c\  
+noremap <C-c> :call NERDComment(0,"toggle")<CR>
 
 " Enable folding
 set foldmethod=manual
@@ -104,18 +98,21 @@ set foldlevel=99
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
-set undofile						" Enable persistent undo
-set laststatus=2                    " Statusline
+" Statusline
+set laststatus=2
+set statusline=%#Normal#%=%f\ %y%r\ %l/%L,\ %c\  
+
+set undofile						            " Enable persistent undo
 set lazyredraw                      " Faster scrolling when syntax is on
 set nobackup                        " No file backups
-set shiftwidth=4                    " Number of characters to indent by
-set tabstop=4                       " Indentation for tab key
+set tabstop=8                       " Properly count tabs
 set expandtab                       " Expand Tab as spaces
+set shiftwidth=4                    " Number of characters to indent by
+set autoindent                      " Auto indent
+set smartindent                     " Smart indent
 set smarttab                        " Higher IQ tabs
 set encoding=utf8                   " UTF8 support
 set nu                              " Enables line numbers
-set autoindent                      " Auto indent
-set smartindent                     " Smart indent
 set cursorline                      " Highlight current line
 set colorcolumn=81                  " Highlight the nth column 
 "set textwidth=80                    " Start new line after n characters
@@ -134,13 +131,13 @@ set novisualbell                    " Get rid of bell flashes
 " set mouse=a                         " Enable using mouse in all modes
 
 " Filetype specific commands
-autocmd BufRead,BufNewFile *.tex
+autocmd BufReadPre,BufNewFile *.tex
   \ setfiletype tex |
   \ syntax spell toplevel
-autocmd BufRead,BufNewFile *.svelte setfiletype html
-autocmd BufRead,BufNewFile *.md
-      \ setfiletype markdown |
-      \ syntax spell toplevel
+autocmd BufReadPre,BufNewFile *.svelte setfiletype html
+autocmd BufReadPre,BufNewFile *.md
+  \ setfiletype markdown |
+  \ syntax spell toplevel
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2
 autocmd FileType css setlocal shiftwidth=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
@@ -150,9 +147,6 @@ autocmd FileType text setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
 autocmd FileType markdown setlocal conceallevel=2
 
-" Disable Page Up/Down
-noremap <PageDown> <Nop>
-noremap <PageUp> <Nop>
 " Jump around (to get down (and up)) using Ctrl-j/k
 noremap <silent> <C-j> <C-D>
 noremap <silent> <C-k> <C-U>
@@ -162,10 +156,6 @@ inoremap <down> <nop>
 " Disable left/right arrow keys in normal mode
 nnoremap <left> <nop>
 nnoremap <right> <nop>
-" Use up/down arrow keys in normal mode to navigate ALE errors/warnings
-nnoremap <silent> <up> :ALEPrevious<CR>
-nnoremap <silent> <down> :ALENext<CR>
-nnoremap <silent> <C-down> :ALEDetail<CR>
 " Move by editor lines
 nnoremap j gj
 nnoremap k gk

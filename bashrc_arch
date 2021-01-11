@@ -49,10 +49,10 @@ alias pacli='pacman -Qqe'
 
 # ------ Functions -----
 # Accepts command and a file, detaches process from terminal completely
-detach() { "$1" "$2" 2>&1 > /dev/null & disown; }
+detach() { "$1" "$2" > /dev/null 2>&1 & disown; }
 vpn() { wg-quick "$1" azire; }
 select_network() {  wpa_cli -i wlan0 select_network $(wpa_cli -i wlan0 list_networks | grep "$1" | cut -f 1); }
-img() { feh -xZ --scale-down -B black $1 2>&1 > /dev/null & disown; }
+img() { feh -xZ --scale-down -B black $1 > /dev/null 2>&1 & disown; }
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
 regex() { grep -Po $1 $2; }
 mydd() { sudo dd bs=4M if="$1" of="$2" status=progress oflag=sync; }
@@ -108,8 +108,10 @@ alias mnt='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
 alias ntfs='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022 -t ntfs-3g'
 # Install jmtpfs from aur
 alias android='sudo jmtpfs /mnt'
+# Install evince-no-gnome from aur
+alias evince='detach evince'
 alias pdf='detach llpp'
-alias epub='detach foliate'
+alias epub='detach llpp'
 alias doc='detach libreoffice'
 alias wiki='vim ~/Documents/wiki/index.md'
 alias news='newsboat'
@@ -117,8 +119,8 @@ alias httpserver='python -m http.server'
 alias scanwifi='sudo iw dev wlan0 scan'
 alias sound='pulsemixer'
 alias weather='curl wttr.in/Ottawa'
-alias backup='rsync --delete-after -aAXHv $HOME/Documents $HOME/Carleton $HOME/Pictures $HOME/Workspace backup:vigrid/'
-alias backup_tar='tar -czf "laptop_backup_$(date -I).tar.gz" $HOME/Documents $HOME/Carleton $HOME/Pictures $HOME/Workspace'
+alias backup='rsync --delete-after -aAXHv $HOME/Documents $HOME/Carleton $HOME/Pictures $HOME/Workspace --exclude .git/ --exclude target/ backup:vigrid/'
+alias backup_tar='tar -czf "laptop_backup_$(date -I).tar.gz" $HOME/Documents $HOME/Carleton $HOME/Pictures $HOME/Workspace --exclude .git/ --exclude target/'
 # School Config Extension
 [ -f $HOME/Carleton/.bashrc.ext ] && . $HOME/Carleton/.bashrc.ext
 
