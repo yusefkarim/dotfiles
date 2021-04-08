@@ -8,8 +8,10 @@ endif
 call plug#begin('~/.config/nvim/plugged')   
 Plug 'junegunn/seoul256.vim'
 Plug 'ap/vim-buftabline'
-Plug 'mmai/vim-markdown-wiki'
+Plug 'plasticboy/vim-markdown'
 Plug 'scrooloose/nerdcommenter'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'soywod/quicklist.vim'
 Plug 'mhinz/vim-signify'
@@ -17,23 +19,31 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 call plug#end()
 
-" Gruvbox colorscheme/plugin
+" Colorscheme
 syntax on
 filetype plugin indent on
 set termguicolors
 set background=dark
-" colorscheme gruvbox8
 let g:seoul256_srgb = 1
 let g:seoul256_background = 235
 colorscheme seoul256
 
-" Quicklist
-nmap <C-up> <plug>(quicklist-toggle-qf)
-nmap <up> <plug>(quicklist-prev-item)
-nmap <down> <plug>(quicklist-next-item)
+" vim-markdown plugin
+let g:vim_markdown_conceal = 2
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_math = 1
+let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_autowrite = 1
+let g:vim_markdown_edit_url_in = 'tab'
+let g:vim_markdown_follow_anchor = 1
+let g:vim_markdown_new_list_item_indent = 2
+autocmd FileType markdown map <CR> <Plug>Markdown_EditUrlUnderCursor
 
 " Language server and autocompletion
 " Install rust-analyzer, clangd, python-language-server, pyls-black, texlab, svls
+" nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 set signcolumn=yes
@@ -45,7 +55,6 @@ local on_attach = function(client)
     require'completion'.on_attach(client)
 end
 
-nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
 nvim_lsp.pyls.setup({ on_attach=on_attach })
 nvim_lsp.clangd.setup({ on_attach=on_attach })
 nvim_lsp.texlab.setup({ on_attach=on_attach })
@@ -62,7 +71,7 @@ EOF
 nnoremap <silent> <C-d> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <C-h> <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <C-i> <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-s> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <C-s> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <C-x> <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
@@ -81,6 +90,15 @@ inoremap <silent><expr> <TAB>
   \ <SID>check_back_space() ? "\<TAB>" :
   \ completion#trigger_completion()
 
+" fzf plugin
+nnoremap f :FZF<CR>
+nnoremap <C-_> :Lines<CR>
+
+" Quicklist
+nnoremap <C-up> <plug>(quicklist-toggle-qf)
+nnoremap <up> <plug>(quicklist-prev-item)
+nnoremap <down> <plug>(quicklist-next-item)
+
 " Buftabline plugin
 let g:buftabline_show = 1
 let g:buftabline_plug_max = 0
@@ -90,13 +108,12 @@ let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 noremap <C-c> :call NERDComment(0,"toggle")<CR>
 
-" Enable folding
-set foldmethod=manual
+" Configure folding
+set foldmethod=syntax
 set foldlevel=99
-" Select lines in visual mode then press space to fold those lines.
-" Press space again in normal mode to unfold
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
+nnoremap <Space> za
+let g:markdown_folding = 1
+let g:tex_fold_enabled=1
 
 " Statusline
 set laststatus=2
@@ -116,10 +133,9 @@ set nu                              " Enables line numbers
 set cursorline                      " Highlight current line
 set colorcolumn=81                  " Highlight the nth column 
 "set textwidth=80                    " Start new line after n characters
-"set wrap                            " Enable soft wrapping
+set wrap                            " Enable soft wrapping
 set linebreak                       " Move wrapped content to new line
 set breakindent                     " Line up indentation of wrapped content 
-set comments=s1:/*,mb:\ *,elx:\ */  " Smart comments
 set showmatch                       " Highlight matching brackets
 set incsearch                       " Start searching during typing
 set wrapscan      					        " Searches wrap around the end of the file
@@ -131,7 +147,7 @@ set novisualbell                    " Get rid of bell flashes
 " set mouse=a                         " Enable using mouse in all modes
 
 " Filetype specific commands
-autocmd BufReadPre,BufNewFile *.tex
+autocmd BufEnter,BufReadPre,BufNewFile *.tex
   \ setfiletype tex |
   \ syntax spell toplevel
 autocmd BufReadPre,BufNewFile *.svelte setfiletype html
@@ -143,13 +159,13 @@ autocmd FileType css setlocal shiftwidth=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
+autocmd FileType tex setlocal indentkeys=!^F,o,O,(,),],},\&,=item,=else,=fi
 autocmd FileType text setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
-autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
-autocmd FileType markdown setlocal conceallevel=2
+autocmd FileType markdown setlocal conceallevel=2 shiftwidth=2 tabstop=2 spelllang=en_us spell
 
 " Jump around (to get down (and up)) using Ctrl-j/k
-noremap <silent> <C-j> <C-D>
-noremap <silent> <C-k> <C-U>
+noremap <C-j> <C-D>
+noremap <C-k> <C-U>
 " Disable up/down arrow keys in visual mode
 inoremap <up> <nop>
 inoremap <down> <nop>
@@ -162,8 +178,8 @@ nnoremap k gk
 
 " Exit terminal insert mode with Esc
 tnoremap <Esc> <C-\><C-n>
-" Clear search results whith Ctrl+/
-nnoremap <silent> <c-_> :noh<CR>
+" Clear screen and search results whith Ctrl+l
+nnoremap <silent> <C-l> :let @/ = ""<CR>:clear<CR>
 " Pressing F1 will write file, in normal and insert mode
 nnoremap <F1> :w<CR>
 inoremap <F1> <ESC>:w<CR>
@@ -172,54 +188,51 @@ nnoremap <silent> <F2> :bp<CR>
 nnoremap <silent> <F3> :bd<CR>
 nnoremap <silent> <F4> :bn<CR>
 
-" Markdown stuff
-function! ToggleCheckbox()
-  let states = [' ', 'x']
-  let line = getline('.')
+" Custom commands
 
-  if(match(line, '\[.\]') != -1)
-    for state in states
-      if(match(line, '\['.state.'\]') != -1)
-        let next_state = states[(index(states, state) + 1) % 2]
-        let line = substitute(line, '\['.state.'\]', '\['.next_state.'\]', '')
-        call setline('.', line)
-        break
-      endif
-    endfor
-  endif
-endfunction
-" Toggle Markdown checkboxes
-nnoremap <C-t> :call ToggleCheckbox()<CR>
+" Compile to PDF using pandoc
+command MD silent !{
+    \ pandoc % -s --pdf-engine=lualatex
+    \ --highlight-style=breezedark
+    \ -f markdown-implicit_figures
+    \ -H ~/.config/pandoc/header.tex 
+    \ -V fontsize=11pt -V geometry:margin=2cm -V urlcolor:blue
+    \ -o %:t:r.pdf
+    \ && evince %:t:r.pdf;
+    \ } &
 
 " LaTeX stuff
 " Use lualatex to create a pdf of the current Latex file
 " NOTE: If using the minted package, specify the output directory when
 " importing: \usepackage[outputdir=/tmp]{minted}
-nnoremap <C-l> :!{ 
-    \ rm -rf /tmp/_minted*
-    \ && lualatex -shell-escape -output-directory=/tmp % 2>&1 > /dev/null
-    \ && biber /tmp/%:t:r 2>&1 > /dev/null
-    \ ; mv /tmp/%:t:r.pdf . 2>&1 > /dev/null
-    \ && pkill -SIGHUP -f %:t:r.pdf;
-    \ } &<CR><CR>
+command T silent !{ 
+    \ rm -rf /tmp/_minted* > /dev/null 2>&1
+    \ && lualatex -shell-escape -output-directory=/tmp % > /dev/null 2>&1
+    \ && biber /tmp/%:t:r > /dev/null 2>&1
+    \ ; mv /tmp/%:t:r.pdf . > /dev/null 2>&1
+    \ && evince %:t:r.pdf;
+    \ } &
 
-" Custom commands
 " :CC compiles and runs the current file
-command CC !cc % && ./a.out && rm a.out
-" :CCM compiles and runs the current file, LINKS THE MATH LIBRARY(math.h)
-command CCM !cc % -lm && ./a.out && rm a.out
+command CC :term cc % && ./a.out && rm a.out
+" Run current Bash script
+command SH :term /bin/bash %
 " Run current Python3 script
-command PY :term /usr/bin/env python3 %
+command PY :term python3 %
 " Priviliged Python3 script
-command PPY :term sudo /usr/bin/env python3 %
+command PPY :term sudo python3 %
 " Run current NodeJS script
 command NO :term /bin/node %
 " Beautify JSON formatted objects into a new file
 command JSON !python3 -m json.tool % > %.json
 " Output current date at cursor
 command DATE :put =strftime('%A %Y-%m-%d %I:%M %p')
+" Create a notebook entry for current day
+command ENTRY :put =strftime('[%Y-%m-%d](%Y-%m-%d.md)')
 " Run cargo build (rust)
-command RB !cargo build
+command RB :term cargo build
+" Run cargo test
+command RT :term cargo test -- --nocapture
 " Disgusting no good function, I apologize to your eyeballs
 function! CargoRun()
     let l:abs_path = expand('%:p')
@@ -231,17 +244,17 @@ function! CargoRun()
           let l:file_name = l:split_path[-2]
         endif
         echo "Running binary " . l:file_name
-        execute "!cargo run --bin " . l:file_name
+        execute "term cargo run --bin " . l:file_name
     elseif match(l:abs_path, "example") >= 0
         let l:split_path = split(l:abs_path, '/')
         if match(l:file_name, "main") >= 0 && l:split_path[-2] != "examples"
           let l:file_name = l:split_path[-2]
         endif
         echo "Running example " . l:file_name
-        execute "!cargo run --example " . l:file_name
+        execute "term cargo run --example " . l:file_name
     else
         echo "Running " . l:file_name
-        !cargo run
+        term cargo run
     endif
 endfunction
 " Run cargo run (rust)

@@ -27,6 +27,15 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 
+# ------ History -----
+# Don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+# Append to the history file, don't overwrite it
+shopt -s histappend
+# See HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
 # ------ Pacman stuff -----
 # Synchronize with repositories before upgrading packages
 alias pacup='sudo pacman -Syu'
@@ -62,6 +71,8 @@ d2h() { python3 -c "print(hex($1))"; }
 h2d() {  python3 -c "print(int('$1', 16))"; }
 # Binary to decimal
 b2d() {  python3 -c "print(int('$1', 2))"; }
+# Hexadecimal to ascii
+h2a() {  python3 -c "print(bytearray.fromhex('$1'.strip('0x')).decode())"; }
 # Install arch-wiki-docs
 archfind() { find /usr/share/doc/arch-wiki/html/en/ -iname "*$1*" -exec basename {} .html ';';  }
 archview() { firefox /usr/share/doc/arch-wiki/html/en/$1.html; }
@@ -71,9 +82,9 @@ md2pdf() {
     pandoc $1 -s $2 --pdf-engine=lualatex --highlight-style=breezedark \
         -f markdown-implicit_figures \
         -H ~/.config/pandoc/header.tex \
+        -V 'mainfont:OpenSans' \
         -V fontsize=11pt -V geometry:margin=2cm -V urlcolor:blue \
         -o ${filename%.*}.pdf; 
-    # -V mainfont:DejaVuSansMono
 }
 cargo-clean() {
     find . -type d -name target -exec du -chs {} + | sort -h;
@@ -108,10 +119,8 @@ alias mnt='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
 alias ntfs='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022 -t ntfs-3g'
 # Install jmtpfs from aur
 alias android='sudo jmtpfs /mnt'
-# Install evince-no-gnome from aur
-alias evince='detach evince'
-alias pdf='detach llpp'
-alias epub='detach llpp'
+alias pdf='detach evince'
+alias pdf-edit='detach xournalpp'
 alias doc='detach libreoffice'
 alias wiki='vim ~/Documents/wiki/index.md'
 alias news='newsboat'

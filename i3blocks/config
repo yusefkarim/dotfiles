@@ -53,7 +53,7 @@ signal=10
 # Battery indicator
 [battery]
 color=#F0B116
-label=⚡
+label=
 interval=30
 
 # Wireguard Interface Address
