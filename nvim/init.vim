@@ -13,6 +13,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'kylelaker/riscv.vim'
 Plug 'soywod/quicklist.vim'
 Plug 'mhinz/vim-signify'
 Plug 'neovim/nvim-lspconfig'
@@ -25,7 +26,7 @@ filetype plugin indent on
 set termguicolors
 set background=dark
 let g:seoul256_srgb = 1
-let g:seoul256_background = 235
+let g:seoul256_background = 234
 colorscheme seoul256
 
 " vim-markdown plugin
@@ -36,14 +37,13 @@ let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_autowrite = 1
-let g:vim_markdown_edit_url_in = 'tab'
+let g:vim_markdown_edit_url_in = 'current'
 let g:vim_markdown_follow_anchor = 1
 let g:vim_markdown_new_list_item_indent = 2
 autocmd FileType markdown map <CR> <Plug>Markdown_EditUrlUnderCursor
 
 " Language server and autocompletion
 " Install rust-analyzer, clangd, python-language-server, pyls-black, texlab, svls
-" nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 set signcolumn=yes
@@ -55,6 +55,7 @@ local on_attach = function(client)
     require'completion'.on_attach(client)
 end
 
+nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
 nvim_lsp.pyls.setup({ on_attach=on_attach })
 nvim_lsp.clangd.setup({ on_attach=on_attach })
 nvim_lsp.texlab.setup({ on_attach=on_attach })
@@ -119,6 +120,7 @@ let g:tex_fold_enabled=1
 set laststatus=2
 set statusline=%#Normal#%=%f\ %y%r\ %l/%L,\ %c\  
 
+set hidden                          " Keep buffers open, but hidden
 set undofile						            " Enable persistent undo
 set lazyredraw                      " Faster scrolling when syntax is on
 set nobackup                        " No file backups
@@ -132,7 +134,7 @@ set encoding=utf8                   " UTF8 support
 set nu                              " Enables line numbers
 set cursorline                      " Highlight current line
 set colorcolumn=81                  " Highlight the nth column 
-"set textwidth=80                    " Start new line after n characters
+set textwidth=80                    " Start new line after n characters
 set wrap                            " Enable soft wrapping
 set linebreak                       " Move wrapped content to new line
 set breakindent                     " Line up indentation of wrapped content 
@@ -163,6 +165,8 @@ autocmd FileType tex setlocal indentkeys=!^F,o,O,(,),],},\&,=item,=else,=fi
 autocmd FileType text setlocal shiftwidth=2 tabstop=2 spelllang=en_us spell
 autocmd FileType markdown setlocal conceallevel=2 shiftwidth=2 tabstop=2 spelllang=en_us spell
 
+" Format the paragraph the cursor is on to match the currently set textwidth
+noremap <S-f> }<S-v>{gq
 " Jump around (to get down (and up)) using Ctrl-j/k
 noremap <C-j> <C-D>
 noremap <C-k> <C-U>
@@ -184,16 +188,26 @@ nnoremap <silent> <C-l> :let @/ = ""<CR>:clear<CR>
 nnoremap <F1> :w<CR>
 inoremap <F1> <ESC>:w<CR>
 " F2 and F4 can switch buffers, F3 closes the current buffer
+function! DeleteBuffer()
+  let curr_buf = bufnr("%")
+  if getbufvar(curr_buf, "&buftype") == "terminal"
+    execute "bdelete! " . curr_buf
+  else
+    execute "bdelete " . curr_buf
+  endif
+" execute 'bdelete!' join(filter(range(1, bufnr('$')), 'bufexists(v:val) && getbufvar(v:val, "&buftype") is# "terminal"'))
+endfunction
 nnoremap <silent> <F2> :bp<CR>
-nnoremap <silent> <F3> :bd<CR>
+nnoremap <silent> <F3> :call DeleteBuffer()<CR>
 nnoremap <silent> <F4> :bn<CR>
+
 
 " Custom commands
 
 " Compile to PDF using pandoc
 command MD silent !{
     \ pandoc % -s --pdf-engine=lualatex
-    \ --highlight-style=breezedark
+    \ --highlight-style=zenburn
     \ -f markdown-implicit_figures
     \ -H ~/.config/pandoc/header.tex 
     \ -V fontsize=11pt -V geometry:margin=2cm -V urlcolor:blue
@@ -209,12 +223,30 @@ command T silent !{
     \ rm -rf /tmp/_minted* > /dev/null 2>&1
     \ && lualatex -shell-escape -output-directory=/tmp % > /dev/null 2>&1
     \ && biber /tmp/%:t:r > /dev/null 2>&1
+    \ && makeglossaries -d /tmp %:t:r > /dev/null 2>&1
     \ ; mv /tmp/%:t:r.pdf . > /dev/null 2>&1
     \ && evince %:t:r.pdf;
     \ } &
 
-" :CC compiles and runs the current file
-command CC :term cc % && ./a.out && rm a.out
+" Markdown stuff
+function! ToggleCheckbox()
+  let states = [' ', 'x']
+  let line = getline('.')
+
+  if(match(line, '\[.\]') != -1)
+    for state in states
+      if(match(line, '\['.state.'\]') != -1)
+        let next_state = states[(index(states, state) + 1) % 2]
+        let line = substitute(line, '\['.state.'\]', '\['.next_state.'\]', '')
+        call setline('.', line)
+        break
+      endif
+    endfor
+  endif
+endfunction
+" Toggle Markdown checkboxes
+autocmd FileType markdown nnoremap <silent> <C-t> :call ToggleCheckbox()<CR>
+
 " Run current Bash script
 command SH :term /bin/bash %
 " Run current Python3 script
@@ -229,6 +261,14 @@ command JSON !python3 -m json.tool % > %.json
 command DATE :put =strftime('%A %Y-%m-%d %I:%M %p')
 " Create a notebook entry for current day
 command ENTRY :put =strftime('[%Y-%m-%d](%Y-%m-%d.md)')
+
+" Meh, pass this arguments such as -lm or -pthreads using the CC command below
+function! CompileAndRunC(...)
+ execute "term cc -Wextra -Wall -Werror -g " . join(a:000) . " % && ./a.out && rm a.out"
+endfunction
+" :CC <args> compiles and runs the current file
+command -nargs=* CC call CompileAndRunC(<f-args>)
+
 " Run cargo build (rust)
 command RB :term cargo build
 " Run cargo test
