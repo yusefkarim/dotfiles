@@ -1,0 +1,145 @@
+// -*- mode: json -*-
+
+{
+	"layer": "top",
+	"position": "bottom",
+	"output": "eDP-1",
+
+	"modules-left": [
+		"custom/logo",
+		"sway/workspaces",
+		"custom/right-arrow-dark"
+	],
+	"modules-right": [
+		"custom/left-arrow-dark",
+		"clock",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"custom/weather",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"pulseaudio",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"memory",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"cpu",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"disk",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"battery",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"network#1",
+		"network#2",
+		"network#3",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"tray"
+	],
+
+	"custom/left-arrow-dark": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/left-arrow-light": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/right-arrow-dark": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/right-arrow-light": {
+		"format": "",
+		"tooltip": false
+	},
+
+        "custom/logo": {
+            "format": " "
+        },
+	"sway/workspaces": {
+		"disable-scroll": true,
+		"format": "{name}"
+	},
+        "clock": {
+            "interval": 5,
+            "format": "{:%FT:%T}",
+            "tooltip": true,
+            "tooltip-format": "{calendar}",
+            "today-format": "<span color='#ff6699'><b>{}</b></span>",
+            "on-click": "wl-copy $(date +%FT%T)"
+        },
+        "custom/weather": {
+            "exec": "curl 'https://wttr.in/?format=1'",
+            "interval": 3600
+        },
+	"pulseaudio": {
+		"format": "{icon} {volume:2}%",
+		"format-bluetooth": "{icon}  {volume}%",
+		"format-muted": "MUTE",
+		"format-icons": {
+			"headphones": "",
+			"default": [
+				"",
+				""
+			]
+		},
+		"scroll-step": 5,
+		"on-click": "pamixer -t",
+		"on-click-right": "pavucontrol"
+	},
+	"memory": {
+		"interval": 5,
+		"format": "MEM {}%"
+	},
+	"cpu": {
+		"interval": 5,
+		"format": "CPU {usage:2}%"
+	},
+	"disk": {
+		"interval": 5,
+		"format": "Disk {percentage_used:2}%",
+		"path": "/"
+	},
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+        "network#1": {
+                "interface": "wlan0",
+                "format-wifi": "  {ipaddr} ",
+                "format-disconnected": "",
+                "tooltip-format-wifi": "{ifname}@{essid} ({signalStrength}%)",
+        },
+        "network#2": {
+                "interface": "enp0s31f6",
+                "format-ethernet": " {ipaddr}",
+                "format-disconnected": "",
+                "tooltip-format-ethernet": "{ifname}",
+        },
+        "network#3": {
+                "interface": "azire",
+                "format-ethernet": "聯{ipaddr}",
+                "format-disconnected": "",
+                "tooltip-format-ethernet": "{ifname}",
+       },
+       "tray": {
+                "icon-size": 20
+       }
+}
+

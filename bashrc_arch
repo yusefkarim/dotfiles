@@ -16,7 +16,7 @@ PURPLE=$(tput setaf 98)
 if [ -n "$SSH_CLIENT" ]; then SSH="[SSH]"; fi
 export PS1='\[${GRAY}\][\[${RED}\]\u\[${WHITE}\]@\[${BLUE}\]\h \[${GREEN}\]\W\[${GRAY}\]]\[${PURPLE}\]${SSH}\[${ORANGE}\]\$\[${WHITE}\] '
 export PATH="$HOME/.local/bin/:$HOME/.cargo/bin:$PATH"
-export EDITOR="hx"
+export EDITOR="vim"
 export GPG_TTY=$(tty)
 
 # ----- Pretty colours -----
@@ -45,9 +45,9 @@ alias pacin='paru -S'
 # Remove/Clean orphan packages
 alias paccl='paru -Rns $(paru -Qtdq)'
 # Search for package(s) in the repositories
-alias pacse='paru -Ss'
+alias pacse='paru --bottomup -Ss'
 # Search for package(s) in the local database
-alias paclo='paru -Qs'
+alias paclo='paru --bottomup -Qs'
 # Display package info, e.g., its dependencies
 alias pacinfo='paru -Si'
 # Remove the specified package(s), its configuration(s) and unneeded dependencies
@@ -58,7 +58,7 @@ alias pacre='paru -R'
 alias paccc='paru -Sc'
 # List installed packages (local and AUR)
 alias pacli='paru -Qqe'
-# Rollback a package using the below and /var/cache/pacman/pkg/
+# Rollback a package using the below and /var/cache/paru/pkg/
 alias pacrb='paru -U'
 
 # ------ Functions -----
@@ -66,7 +66,6 @@ alias pacrb='paru -U'
 detach() { "$1" "$2" > /dev/null 2>&1 & disown; }
 vpn() { wg-quick "$1" azire; }
 select_network() { wpa_cli -i wlan0 select_network $(wpa_cli -i wlan0 list_networks | grep "$1" | cut -f 1); }
-img() { feh -xZ --scale-down -B black $1 > /dev/null 2>&1 & disown; }
 compress() { tar -czvf "${1}.tar.gz" "$1"; }
 regex() { grep -Po $1 $2; }
 mydd() { sudo dd bs=4M if="$1" of="$2" status=progress oflag=sync; }
@@ -112,17 +111,6 @@ cargo-clean() {
     fi
     find -name target -type d -exec rm -r {} +;
 }
-data() {
-	if ! mountpoint -q ~/.data; then
-		sudo cryptsetup open /dev/sda3 data;
-		sudo mount /dev/mapper/data ~/.data/;
-		cd ~/.data;
-	else
-		cd;
-		sudo umount ~/.data;
-		sudo cryptsetup close data;
-	fi
-}
 creatures() {
   power=$(bluetoothctl show | grep -Po "(?<=Powered:\s)(.*)")
   if [[ $power != "yes" ]]; then
@@ -153,6 +141,7 @@ alias mnt='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022'
 alias ntfs='sudo mount -o uid=$USER,gid=$USER,fmask=133,dmask=022 -t ntfs-3g'
 # Install jmtpfs from aur
 alias android='jmtpfs'
+alias img='detach imv'
 alias pdf='detach evince'
 alias epub='detach firefox'
 alias pdf-edit='detach libreoffice --draw'
@@ -171,4 +160,15 @@ alias backup-tar='tar -czf "laptop_backup_$(date -I).tar.gz" $HOME/Documents $HO
 # ssh-keygen -t rsa
 # openssl req -x509 -newkey rsa:4096 -days 365 -keyout $1.key -out $1.crt -nodes
 # sudo trust anchor -v $1.crt
+# data() {
+# 	if ! mountpoint -q ~/.data; then
+# 		sudo cryptsetup open /dev/sda3 data;
+# 		sudo mount /dev/mapper/data ~/.data/;
+# 		cd ~/.data;
+# 	else
+# 		cd;
+# 		sudo umount ~/.data;
+# 		sudo cryptsetup close data;
+# 	fi
+# }
 # serial() { sudo screen -L $1 $2,cs8,-parenb,-cstopb,-hupcl; }

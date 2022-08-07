@@ -1,5 +1,0 @@
-require('plugins')
-require('builtins')
-require('settings')
-require('autocmd')
-require('keybinds')

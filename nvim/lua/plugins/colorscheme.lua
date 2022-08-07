@@ -1,6 +1,6 @@
 local cmd = vim.api.nvim_command
 local g = vim.g
 
-g.edge_enable_italic = 1
-g.edge_disable_italic_comment= 1
-cmd('colorscheme edge')
+g.gruvbox_material_better_performance = 1
+g.gruvbox_material_background = 'hard'
+cmd('colorscheme gruvbox-material')

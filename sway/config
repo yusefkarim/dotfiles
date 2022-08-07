@@ -1,20 +1,54 @@
-# i3 config file (v4)
-
+# Sway config file
 # Logo key
 set $mod Mod4
 # Alt key
 set $alt Mod1
+# Font
+font pango:Hack 12
 # Application launcher
-set $menu dmenu_run
+set $menu bemenu-run
+# Terminal
+set $terminal alacritty
 # Browser
 set $browser firefox
 
-# Font for window titles and bar
-font pango:Hack 12
+### Initial commands
+exec swayidle -w \
+	timeout 600 'swaylock -f' \
+	timeout 610 'swaymsg "output * dpms off"' \
+	resume 'swaymsg "output * dpms on"'
+output * bg #000000 solid_color
+
+### Input and output defaults
+input "SynPS/2 Synaptics TouchPad" {
+    tap enabled
+    dwt enabled
+    pointer_accel 0.5
+}
+output HDMI-A-2 {
+    resolution 1920x1080
+    position 0 0
+    disable
+}
+output eDP-1 {
+    background #000000 solid_color
+    resolution 1920x1080
+    position 0 1080
+}
+
+### Display managment
+# Laptop
+bindsym $mod+Shift+l exec swaymsg output eDP-1 enable pos 0 0, output HDMI-A-2 disable
+# HDMI only
+bindsym $mod+Shift+h exec swaymsg output eDP-1 disable, output HDMI-A-2 enable pos 0 0
+# Laptop + HDMI horizontal (above)
+bindsym $mod+Shift+b exec swaymsg output HDMI-A-2 enable pos 0 0 transform 0, output eDP-1 enable pos 0 1080
+# Laptop + HDMI vertical (on the left)
+bindsym $mod+Shift+v exec swaymsg output HDMI-A-2 enable pos 0 0 transform 90, output eDP-1 enable pos 1080 270
 
 ### Key bindings, applications
 # Start a terminal
-bindsym $alt+t exec i3-sensible-terminal
+bindsym $alt+t exec $terminal
 # Launch browser
 bindsym $alt+b exec $browser
 # Launch dmenu
@@ -23,38 +57,22 @@ bindsym $alt+d exec $menu
 bindsym $alt+w exec $term -e nvim ~/Documents/wiki/index.md
 # Open news feed
 bindsym $alt+n exec $term -e newsboat
-# Redshift screen
-bindsym $alt+r exec xrandr --output eDP-1 --gamma 1.0:0.769:0.524 || \
-	    xrandr --output HDMI-2 --gamma 1.0:0.769:0.524
-# Clear redshift setting
-bindsym $alt+Shift+r exec xrandr --output eDP-1 --gamma 1.0:1.0:1.0 || \
-	    xrandr --output HDMI-2 --gamma 1.0:1.0:1.0
-# Run i3lock
-bindsym $mod+l exec i3lock -ue -c 282828 && sleep 20 && pgrep i3lock && xset dpms force off
+# Run lock
+bindsym $mod+l exec swaylock -c 000000 -f
 
 ### Key bindings, special
-set $refresh_i3status killall -SIGUSR1 i3status
-# XF86 buttons
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 bindsym XF86MonBrightnessUp exec brightnessctl set +2%
-bindsym Print exec scrot -q 100 ~/Pictures/%Y-%m-%d-%T-screenshot.png
-bindsym --release $mod+Print exec scrot -q 100 -s ~/Pictures/%Y-%m-%d-%T-screenshot.png
+bindsym XF86Search exec $menu
+bindsym Print exec grim ~/Pictures/$(date +%F_%Hh%Mm%Ss)_screenshot.png
+bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%F_%Hh%Mm%Ss)_screenshot.png
 
 ### Kill focused window
 bindsym $mod+q kill
-
-### Enable touchpad with xinput
-#Step 1: Get devide id using, xinput list
-#Step 2: List device properties to find Tap Action id, xinput list-props DEVICE_ID
-#Step 3: Change the command below to reflect device id and property id
-#	     DEVICE ID;  ;PROPERTY ID
-# Enable tapping
-exec xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
-exec xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Accel Speed" 0.5
 
 ### Moving around
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -113,29 +131,17 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-# Dedicated HDMI-2 workspaces
-workspace 7 output HDMI-2
-workspace 8 output HDMI-2
-workspace 9 output HDMI-2
-workspace 0 output HDMI-2
-
-### External  Display Managment
-# Laptop screen
-bindsym $mod+Shift+l exec xrandr --output HDMI-2 --off --output eDP-1 --auto
-# HDMI
-bindsym $mod+Shift+h exec xrandr --output HDMI-2 --auto --output eDP-1 --off
-# Laptop screen and HDMI
-bindsym $mod+Shift+b exec xrandr --output HDMI-2 --auto --above eDP-1
-bindsym $mod+Shift+m exec xrandr --output HDMI-2 --auto --same-as eDP-1
-bindsym $mod+Shift+v exec xrandr --output HDMI-2 --auto --rotate right --right-of eDP-1
+# Dedicated HDMI workspaces
+workspace 7 output HDMI-A-2
+workspace 8 output HDMI-A-2
+workspace 9 output HDMI-A-2
+workspace 0 output HDMI-A-2
 
 ### Exit and reload
 # Reload the configuration file
 bindsym $mod+Shift+c reload
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-# Exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# Exit Sway
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit Sway?' -b 'Yes, exit Sway' 'swaymsg exit'"
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
@@ -168,17 +174,7 @@ client.focused_inactive $black $black $light_grey $dark_grey $dark_grey
 client.unfocused        $black $black $light_grey $dark_grey $dark_grey
 client.urgent           $red $dark_grey $magenta $dark_grey $dark_grey
 
-### i3blocks stuff
-bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
-
 bar {
-    status_command i3status
-    position top
-    colors {
-        statusline $white
-        background $dark_grey
-        inactive_workspace $black $black $white
-        focused_workspace $black $light_grey $white
-    }
+    swaybar_command waybar
 }
 
