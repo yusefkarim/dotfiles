@@ -1,0 +1,47 @@
+# Set the browser command to use when opening an article in the browser.
+browser firefox
+# Do not ask for confirmation when quiting.
+confirm-exit no
+# Disable reloading all feeds at start up.
+refresh-on-startup no
+# Reload all visible and non-visible feeds.
+reload-only-visible-feeds no
+# The path where articles shall be saved to.
+save-path ~/Downloads/
+# Disable keymap hints on the bottom of screen.
+show-keymap-hint yes
+# Suppres first automatic reload if auto-reload is set to yes.
+suppress-first-reload yes
+# Render all HTML to this maximum line length.
+text-width 80
+# Define maximum download trying limit.
+download-retries 2
+# Number of threads used to fetch feeds
+reload-threads 4
+# Execute the script if new articles arrived.
+notify-program ""
+# Set format string that is used for formatting notifications.
+notify-format "%n unread articles"
+# The location of the cache datebase.
+cache-file ~/.newsboat/cache/cache.db
+# The location of the cookie file.
+cookie-cache ~/.newsboat/cache/cookies.txt
+# Define the file for user errors.
+error-log ~/.newsboat/log/error.log
+
+# Colors
+color background          color15   default
+color listnormal          color248   default
+color listnormal_unread   color6     default    bold
+color listfocus           color235   color239
+color listfocus_unread    color15    color239   bold
+color info                color248   color236   bold
+color article             color248   default
+
+# Highlights
+highlight article "^(Feed|Link):.*$" color6 default bold
+highlight article "^(Title|Date|Author):.*$" color6 default bold
+highlight article "https?://[^ ]+" color10 default underline
+highlight article "\\[[0-9]+\\]" color10 default bold
+highlight article "\\[image\\ [0-9]+\\]" color10 default bold
+highlight feedlist "^─.*$" color6 color236 bold

@@ -1,0 +1,23 @@
+theme = "elliptic"
+
+[editor]
+line-number = "absolute"
+mouse = false
+middle-click-paste = true
+auto-completion = true
+
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "block"
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal]
+C-f = "file_picker_in_current_directory"
+C-b = "buffer_picker"
+H = "kill_to_line_end"
+L = "kill_to_line_start"
+

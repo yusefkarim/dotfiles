@@ -1,0 +1,18 @@
+{
+    "texlab.auxDirectory": "/tmp/",
+    "texlab.chktex.onOpenAndSave": false,
+    "rewrap.wrappingColumn": 80,
+    "rust-analyzer.server.path": "rust-analyzer",
+    "telemetry.telemetryLevel": "off",
+    "gruvboxMaterial.colorfulSyntax": true,
+    "gruvboxMaterial.darkContrast": "hard",
+    "workbench.colorTheme": "Gruvbox Material Dark",
+    "rust-analyzer.checkOnSave.target": null,
+    "rust-analyzer.hoverActions.debug": false,
+    "rust-analyzer.hoverActions.run": false,
+    "rust-analyzer.lens.debug": false,
+    "rust-analyzer.lens.run": false,
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "redhat.telemetry.enabled": false,
+    "workbench.enableExperiments": false,
+}

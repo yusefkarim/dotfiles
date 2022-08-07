@@ -1,0 +1,115 @@
+# ------------Blogs------------
+# lobste.rs
+# https://lobste.rs/rss
+# Hacker News
+https://news.ycombinator.com/rss
+# Brain Pickings
+http://feeds.feedburner.com/brainpickings/rss
+# Interrupt
+https://interrupt.memfault.com/blog/feed.xml
+# Embedded Artistry
+https://embeddedartistry.com/feed/
+# Ramblings from Jessie
+https://blog.jessfraz.com/index.xml
+# Ferrous Systems
+https://ferrous-systems.com/blog/feed.xml
+# Project F - FPGA Development
+# https://projectf.io/index.xml
+# Auxon Corporation
+https://blog.auxon.io/rss.xml
+# Drew DeVault
+https://drewdevault.com/feed.xml
+# Cryptologie
+https://www.cryptologie.net/feed
+# nLab
+# https://ncatlab.org/nlab/atom_with_headlines
+# Wait But Why
+https://waitbutwhy.com/feed
+# The Anarchist Library
+# https://theanarchistlibrary.org/feed
+# Stjepan's blog
+https://stjepang.github.io/feed.xml
+# Cryptology ePrint Archive
+# http://eprint.iacr.org/rss/atom.xml
+# Steve Klabnik
+https://feeds.feedburner.com/steveklabnik/words
+# David Auerbach
+https://www.waggish.org/feed/
+# therealprof
+https://therealprof.github.io//rss.xml
+# Artificial Truth
+https://dustri.org/b/rss.xml
+# Dhole Moments
+https://soatok.blog/rss
+# NIST Information Technology
+# https://www.nist.gov/news-events/information%20technology/rss.xml
+# Google Security Blog
+# http://feeds.feedburner.com/GoogleOnlineSecurityBlog
+# Bellingcat
+# https://www.bellingcat.com/feed/
+# Intelligence and National Security
+# https://www.tandfonline.com/feed/rss/fint20
+# WAR ON THE ROCKS
+# https://warontherocks.com/feed/
+# Technology, Thoughts, and Trinkets
+# https://www.christopher-parsons.com/feed/
+# Shtetl-Optimized
+https://www.scottaaronson.com/blog/?feed=rss2
+#
+# https://arxiv.org/rss/cs.CR/recent
+# The Rust Embedded Working Group
+https://rust-embedded.github.io/blog/rss.xml
+# Chelsea Holland Komlo
+https://writing.chelseakomlo.com/rss/
+# Patterns in the Void
+https://blog.patternsinthevoid.net/feeds/all.atom.xml
+# Embedded.fm
+http://makingembeddedsystems.libsyn.com/rss
+
+# ----------Reddit----------
+http://www.reddit.com/r/worldnews/.rss
+# http://www.reddit.com/r/rust/.rss
+
+# ----------Youtube----------
+# Sorelle Amore Finance
+https://www.youtube.com/feeds/videos.xml?channel_id=UC9lKBRxxsDIarUmNaPe0h0Q
+# Tom Nicholas
+https://www.youtube.com/feeds/videos.xml?channel_id=UCxt2r57cLastdmrReiQJkEg
+#  What I've Learned
+https://www.youtube.com/feeds/videos.xml?channel_id=UCqYPhGiB9tkShZorfgcL2lA
+# 3Blue1Brown 
+https://www.youtube.com/feeds/videos.xml?channel_id=UCYO_jab_esuFRV4b17AJtAw
+# Sisyphus 55
+https://www.youtube.com/feeds/videos.xml?channel_id=UCDETFHKteb-C_EaXmRKvP4w
+# J.J. McCullough
+https://www.youtube.com/feeds/videos.xml?channel_id=UCyhOl6uRlxryALlT5yifldw
+# exurb1a 
+# https://www.youtube.com/feeds/videos.xml?channel_id=UCimiUgDLbi6P17BdaCZpVbg
+# Ferrous Systems GmbH
+https://www.youtube.com/feeds/videos.xml?channel_id=UC7YY_Y0UXAbL_1xkY0hQjJA
+# Savannah Brown 
+https://www.youtube.com/feeds/videos.xml?channel_id=UCDAjO0-hd_RS8ZYJ4W-Iq5Q
+# Numberphile 
+# https://www.youtube.com/feeds/videos.xml?channel_id=UCoxcjq-8xIDTYp3uz647V5A
+# Tibees
+# https://www.youtube.com/feeds/videos.xml?channel_id=UC52kszkc08-acFOuogFl5jw
+# ElectroBOOM
+https://www.youtube.com/feeds/videos.xml?channel_id=UCJ0-OtVpF0wOKEqT2Z1HEtA
+# Kurzgesagt
+https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q
+#  Lex Fridman
+https://www.youtube.com/feeds/videos.xml?channel_id=UCSHZKyawb77ixDdsGog4iWA
+# Singularity Weblog
+# https://www.youtube.com/feeds/videos.xml?channel_id=UCvjt0No0sOsJPBZE_2gdjug
+# Kawehi
+https://www.youtube.com/feeds/videos.xml?channel_id=UC1F1EVFBl3Kg7_aUvQ-nBOg
+# Like Stories of Old
+https://www.youtube.com/feeds/videos.xml?channel_id=UCs7nPQIEba0T3tGOWWsZpJQ
+# Alfsvoid
+https://www.youtube.com/feeds/videos.xml?channel_id=UC9NQqMh0nfeqzPBrMOIGeoQ
+# Stuff Made Here
+https://www.youtube.com/feeds/videos.xml?channel_id=UCj1VqrHhDte54oLgPG4xpuQ
+# Phil’s Lab
+https://www.youtube.com/feeds/videos.xml?channel_id=UCVryWqJ4cSlbTSETBHpBUWw
+# hardwear.io
+# https://www.youtube.com/feeds/videos.xml?channel_id=UChwYb9xc9tZXquQxu4G0l_g
