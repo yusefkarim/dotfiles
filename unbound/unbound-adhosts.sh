@@ -12,9 +12,7 @@ _zeustracker="https://zeustracker.abuse.ch/blocklist.php?download=domainblocklis
 
 # Global variables
 _tmpfile="$(mktemp)" && echo '' > $_tmpfile
-# _unboundconf="unbound-adhosts.conf"
-_unboundconf="/etc/unbound/unbound-adhosts.conf"
-# _unboundroothints="root.hints"
+_unboundconf="/etc/unbound/adhosts.conf"
 _unboundroothints="/etc/unbound/root.hints"
 
 # Remove comments from blocklist

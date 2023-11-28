@@ -60,7 +60,7 @@ vim /etc/pacman.d/mirrorlist
 
 # Use pacstrap to download basic things
 ```sh
-pacstrap /mnt base base-devel neovim dhcpcd wpa_supplicant git python3
+pacstrap /mnt base base-devel mkinitcpio neovim dhcpcd wpa_supplicant git python3
 ```
 
 # Generate Fstab file

@@ -39,6 +39,7 @@
     "packages": [
         "base-devel",
         "openssh",
+        "picocom",
         "rsync",
         "pass",
         "python",
@@ -66,7 +67,8 @@
         "alacritty",
         "imv",
         "mpv",
-        "mupdf"
+        "zathura",
+        "zathura-pdf-poppler"
     ],
     "plugin": null,
     "profile": {
