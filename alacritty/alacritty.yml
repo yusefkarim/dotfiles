@@ -49,7 +49,6 @@ font:
   glyph_offset:
     x: 0
     y: 0
-  use_thin_strokes: false
 
 draw_bold_text_with_bright_colors: true
 colors:
@@ -126,8 +125,6 @@ live_config_reload: true
 
 # Startup directory
 working_directory: None
-# Send ESC (\x1b) before characters when alt is pressed.
-alt_send_esc: true
 
 debug:
   render_timer: false

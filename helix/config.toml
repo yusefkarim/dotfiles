@@ -1,4 +1,4 @@
-theme = "elliptic"
+theme = "gruvbox_dark_hard"
 
 [editor]
 line-number = "absolute"
@@ -14,6 +14,9 @@ select = "block"
 
 [editor.file-picker]
 hidden = false
+
+[editor.lsp]
+display-messages = true
 
 [keys.normal]
 C-f = "file_picker_in_current_directory"

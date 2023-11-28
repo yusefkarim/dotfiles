@@ -1,18 +1,21 @@
 {
-    "texlab.auxDirectory": "/tmp/",
-    "texlab.chktex.onOpenAndSave": false,
-    "rewrap.wrappingColumn": 80,
-    "rust-analyzer.server.path": "rust-analyzer",
-    "telemetry.telemetryLevel": "off",
-    "gruvboxMaterial.colorfulSyntax": true,
-    "gruvboxMaterial.darkContrast": "hard",
     "workbench.colorTheme": "Gruvbox Material Dark",
-    "rust-analyzer.checkOnSave.target": null,
-    "rust-analyzer.hoverActions.debug": false,
-    "rust-analyzer.hoverActions.run": false,
-    "rust-analyzer.lens.debug": false,
-    "rust-analyzer.lens.run": false,
-    "rust-analyzer.checkOnSave.command": "clippy",
-    "redhat.telemetry.enabled": false,
-    "workbench.enableExperiments": false,
+    "gruvboxMaterial.darkContrast": "hard",
+    "window.menuBarVisibility": "toggle",
+    "telemetry.telemetryLevel": "off",
+    "update.mode": "none",
+    "terminal.explorerKind": "external",
+    "terminal.external.linuxExec": "alacritty",
+    "editor.fontFamily": "'Hack', 'monospace', monospace",
+    "sshfs.configs": [
+        {
+            "name": "work-aws-dev",
+            "host": "ec2-44-200-149-215.compute-1.amazonaws.com",
+            "username": "admin",
+            "label": "work-aws-dev",
+            "privateKeyPath": "/home/cuyler/.ssh/work/yusef-dev-vm",
+            "root": "/home/admin/Projects/pvc-appliance"
+        }
+    ],
+    "redhat.telemetry.enabled": false
 }

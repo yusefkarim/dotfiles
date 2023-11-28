@@ -1,10 +1,12 @@
 # ------------Blogs------------
 # lobste.rs
 # https://lobste.rs/rss
+# Hannah McLaughlin
+https://mcla.ug/blog/feeds/all.rss.xml
 # Hacker News
 https://news.ycombinator.com/rss
 # Brain Pickings
-http://feeds.feedburner.com/brainpickings/rss
+# http://feeds.feedburner.com/brainpickings/rss
 # Interrupt
 https://interrupt.memfault.com/blog/feed.xml
 # Embedded Artistry
@@ -28,7 +30,7 @@ https://waitbutwhy.com/feed
 # The Anarchist Library
 # https://theanarchistlibrary.org/feed
 # Stjepan's blog
-https://stjepang.github.io/feed.xml
+# https://stjepang.github.io/feed.xml
 # Cryptology ePrint Archive
 # http://eprint.iacr.org/rss/atom.xml
 # Steve Klabnik
@@ -72,7 +74,11 @@ http://www.reddit.com/r/worldnews/.rss
 
 # ----------Youtube----------
 # Sorelle Amore Finance
-https://www.youtube.com/feeds/videos.xml?channel_id=UC9lKBRxxsDIarUmNaPe0h0Q
+# https://www.youtube.com/feeds/videos.xml?channel_id=UC9lKBRxxsDIarUmNaPe0h0Q
+# Floodplain: Streaming, Rust and Embedded
+https://www.youtube.com/feeds/videos.xml?channel_id=UCcpyKR2c_KFNtfiI0PmdUmw
+# Andrei Litvin (@embedded-rust)
+https://www.youtube.com/feeds/videos.xml?channel_id=UCK1AYe1AVziqPRZyrzbwH2g
 # Tom Nicholas
 https://www.youtube.com/feeds/videos.xml?channel_id=UCxt2r57cLastdmrReiQJkEg
 #  What I've Learned

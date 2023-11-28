@@ -1,9 +1,8 @@
 // -*- mode: json -*-
-
 {
 	"layer": "top",
 	"position": "bottom",
-	"output": "eDP-1",
+	//"output": "eDP-1",
 
 	"modules-left": [
 		"custom/logo",
@@ -14,9 +13,9 @@
 		"custom/left-arrow-dark",
 		"clock",
 		"custom/left-arrow-light",
-		"custom/left-arrow-dark",
-		"custom/weather",
-		"custom/left-arrow-light",
+		// "custom/left-arrow-dark",
+		// "custom/weather",
+		// "custom/left-arrow-light",
 		"custom/left-arrow-dark",
 		"pulseaudio",
 		"custom/left-arrow-light",
@@ -62,21 +61,22 @@
             "format": " "
         },
 	"sway/workspaces": {
+                "all-outputs": false,
 		"disable-scroll": true,
 		"format": "{name}"
 	},
         "clock": {
             "interval": 5,
-            "format": "{:%FT:%T}",
+            "format": "{:%FT%T}",
             "tooltip": true,
             "tooltip-format": "{calendar}",
             "today-format": "<span color='#ff6699'><b>{}</b></span>",
-            "on-click": "wl-copy $(date +%FT%T)"
+            "on-click": "wl-copy --primary $(date +%F_%Hh%Mm%Ss)"
         },
-        "custom/weather": {
-            "exec": "curl 'https://wttr.in/?format=1'",
-            "interval": 3600
-        },
+        //"custom/weather": {
+        //    "exec": "curl 'https://wttr.in/?format=1'",
+        //    "interval": 3600
+        //},
 	"pulseaudio": {
 		"format": "{icon} {volume:2}%",
 		"format-bluetooth": "{icon}  {volume}%",
@@ -107,10 +107,11 @@
 	},
 	"battery": {
 		"states": {
-			"good": 95,
-			"warning": 30,
-			"critical": 15
+			"good": 80,
+			"warning": 60,
+			"critical": 30
 		},
+		"format-charging": " {capacity}%",
 		"format": "{icon} {capacity}%",
 		"format-icons": [
 			"",
@@ -134,7 +135,7 @@
         },
         "network#3": {
                 "interface": "azire",
-                "format-ethernet": "聯{ipaddr}",
+                "format-ethernet": " {ipaddr}",
                 "format-disconnected": "",
                 "tooltip-format-ethernet": "{ifname}",
        },

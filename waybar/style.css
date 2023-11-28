@@ -11,11 +11,13 @@ window#waybar {
 #custom-right-arrow-dark,
 #custom-left-arrow-dark {
 	color: #1a1a1a;
+	padding: 0px;
 }
 #custom-right-arrow-light,
 #custom-left-arrow-light {
 	color: #292b2e;
 	background: #1a1a1a;
+	padding: 0px;
 }
 
 #custom-logo,
@@ -68,6 +70,12 @@ window#waybar {
 }
 #battery {
 	color: #83b97c;
+}
+#battery.warning {
+	color: #f4b400;
+}
+#battery.critical {
+	color: #db4437;
 }
 #disk {
 	color: #dc647e;
