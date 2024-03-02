@@ -115,24 +115,33 @@ cargo-clean() {
 	fi
 	find -name target -type d -exec rm -r {} +
 }
-creatures() {
+
+export BT_AMBER_BUDS="AC:BF:71:A1:D7:C1"
+export BT_CREATURES="28:52:E0:D9:CE:5B"
+export BT_BOOMBOX="00:0D:44:A6:5E:21"
+bt_connect() {
+        device="$1"
+        [[ -z "$device" ]] && echo "Usage: bt_connect <BT_DEVICE_NAME>" && return
 	power=$(bluetoothctl show | grep -Po "(?<=Powered:\s)(.*)")
 	if [[ $power != "yes" ]]; then
 		bluetoothctl power on
-		bluetoothctl connect 28:52:E0:D9:CE:5B
-	else
-		bluetoothctl power off
+		bluetoothctl connect "$device"
 	fi
 }
-boombox() {
-	power=$(bluetoothctl show | grep -Po "(?<=Powered:\s)(.*)")
-	if [[ $power != "yes" ]]; then
-		bluetoothctl power on
-		bluetoothctl connect 00:0D:44:A6:5E:21
-	else
-		bluetoothctl power off
-	fi
+
+bt_off() {
+    bluetoothctl power off
 }
+
+bt_status() {
+    power=$(bluetoothctl show | grep -Po "(?<=Powered:\s)(.*)")
+    if [[ $power = "yes" ]]; then
+        echo "Bluetooth is on"
+    else
+        echo "Bluetooth is off"
+    fi
+}
+
 # Command for serial communication. Usage: serial DEVICE BAUDRATE
 serial() { sudo picocom -b $2 -f n -y n -d 8 -p 1 --omap delbs $1; }
 serial-log() { sudo picocom -b $2 -f n -y n -d 8 -p 1 --omap delbs -g serial.log $1; }
@@ -145,8 +154,15 @@ backup-sync() {
 		/home /root /etc /boot \
 		$1
 }
-# To connect to a WiFi network, use:
-# iwctl --passphrase <password> station wlan0 connect <SSID>
+wifi-connect() {
+    ssid="$1"
+    pass="$2"
+    if [ -z "$pass" ]; then
+        iwctl --dont-ask station wlan0 connect "$ssid"
+    else
+        iwctl --passphrase "$pass" station wlan0 connect "$ssid"
+    fi
+}
 wifi-scan() {
 	iwctl station wlan0 disconnect &&
 		echo "Scanning for 5 seconds, please wait..." &&
