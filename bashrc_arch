@@ -170,7 +170,6 @@ wifi-scan() {
 		sleep 5 &&
 		iwctl station wlan0 get-networks
 }
-
 sound-card-switch() {
 	sound_card="alsa_card.pci-0000_00_1f.3"
 	current_sink=$(pactl get-default-sink)
@@ -182,6 +181,15 @@ sound-card-switch() {
 	fi
 	echo "Switching $sound_card from $current_sink to $new_sink"
 	pactl set-card-profile $sound_card $new_sink
+}
+compile_c() {
+    output_filename="${1%.*}"
+    echo "Compiling ${1} into ${output_filename}..."
+    gcc -Wall -Wextra  -Werror \
+        -Wfloat-equal -Wundef -Wshadow -Wpointer-arith \
+        -Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wcast-qual \
+        -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code \
+        "$1" -o "$output_filename"
 }
 
 # ------ Aliases -----
