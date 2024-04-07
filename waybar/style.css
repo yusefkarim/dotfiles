@@ -43,6 +43,10 @@ window#waybar {
 #workspaces button.focused {
 	color: #268bd2;
 }
+#workspaces button.urgent {
+    	color: #fe0000;
+	animation: animate 1.5s linear infinite;
+}
 #workspaces button:hover {
 	box-shadow: inherit;
 	text-shadow: inherit;
@@ -52,6 +56,18 @@ window#waybar {
 	border: #1a1a1a;
 	padding: 0 3px;
 }
+
+@keyframes animate{ 
+   0%{ 
+     opacity: 1;
+   } 
+   50%{ 
+     opacity: 0;
+   } 
+   100%{ 
+     opacity: 1;
+   } 
+ }
 
 #custom-logo {
 	color: #268bd2;
